@@ -373,30 +373,6 @@
   }
 
   /* ------------------------------------------------------------
-     HOME — page index photo that follows the cursor
-     ------------------------------------------------------------ */
-  const indexFloat = $("#indexFloat");
-  if (indexFloat && matchMedia("(hover: hover) and (min-width: 861px)").matches) {
-    const fimg = $("img", indexFloat);
-    let fx = 0, fy = 0, tx = 0, ty = 0, on = false, floatRaf = 0;
-    const follow = () => {
-      fx += (tx - fx) * 0.16; fy += (ty - fy) * 0.16;
-      indexFloat.style.transform = `translate(${fx.toFixed(1)}px, ${fy.toFixed(1)}px) translate(-50%, -50%) rotate(${((tx - fx) * 0.04).toFixed(2)}deg) scale(${on ? 1 : 0.85})`;
-      floatRaf = on || Math.abs(tx - fx) > 0.5 ? requestAnimationFrame(follow) : 0;
-    };
-    $$("#indexList a").forEach((a) => {
-      a.addEventListener("pointerenter", (e) => {
-        fimg.src = a.dataset.img;
-        if (!on) { fx = tx = e.clientX; fy = ty = e.clientY; }
-        on = true; indexFloat.classList.add("is-on");
-        if (!floatRaf) floatRaf = requestAnimationFrame(follow);
-      });
-      a.addEventListener("pointermove", (e) => { tx = e.clientX; ty = e.clientY; });
-      a.addEventListener("pointerleave", () => { on = false; indexFloat.classList.remove("is-on"); });
-    });
-  }
-
-  /* ------------------------------------------------------------
      FOOTER — plant leans toward the pointer; grain bed scatters and settles
      ------------------------------------------------------------ */
   const footer = $(".footer"), plant = $("#footerPlant"), gCanvas = $("#footerGrains");

@@ -504,7 +504,6 @@ a.cinfo__item:hover { border-color: var(--blue); transform: translateX(4px); }
 .footer__col a:hover { color: var(--gold-2); }
 .footer__col small { opacity: .6; }
 .footer__bottom { position: relative; margin-top: 60px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 22px var(--gutter) 28px; border-top: 1px solid rgba(255, 255, 255, .08); font-size: .82rem; }
-.totop:hover { color: var(--gold-2); }
 
 /* WhatsApp float */
 .wa-float {
@@ -688,7 +687,7 @@ body:not(.page-index) .wa-float { transform: scale(1); }
   .footer__col { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-size: .85rem; }
   .footer__col h4 { display: none; }
   .footer__bottom { margin-top: 22px; padding: 14px var(--gutter) 10px; justify-content: center; text-align: center; font-size: .75rem; }
-  .footer__co, .totop { display: none; }
+  .footer__co { display: none; }
   .footer__plant { height: 300px; bottom: 26px; opacity: .55; }
 }
 /* let taps fall through the footer's empty layout boxes to the plant; links stay clickable */

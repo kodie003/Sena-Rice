@@ -4,6 +4,7 @@ Edit the files in _build/partials and _build/pages, then run:
     python _build/build.py
 The finished .html files are written to the site root.
 """
+import hashlib
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -45,6 +46,14 @@ def nav_links(active, mobile=False):
     return "\n".join(out)
 
 
+def bust(html):
+    """Append a content hash to CSS/JS URLs so browsers never pair new HTML with stale assets."""
+    for rel in ("css/styles.css", "js/main.js", "js/hero-logo.js"):
+        h = hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:10]
+        html = html.replace(f'"{rel}"', f'"{rel}?v={h}"')
+    return html
+
+
 def main():
     head = (HERE / "partials/head.html").read_text(encoding="utf8")
     header = (HERE / "partials/header.html").read_text(encoding="utf8")
@@ -60,7 +69,7 @@ def main():
             + "\n" + body
             + "\n" + footer.replace("{{scripts}}", '<script src="js/hero-logo.js"></script>' if is_home else "")
         )
-        (ROOT / f"{slug}.html").write_text(html, encoding="utf8")
+        (ROOT / f"{slug}.html").write_text(bust(html), encoding="utf8")
         print("built", f"{slug}.html")
 
 

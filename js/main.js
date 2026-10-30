@@ -387,6 +387,7 @@
 
   if (footer && gCanvas) {
     const gctx = gCanvas.getContext("2d");
+    const GRAV = 0.38, AIR = 0.992, BOUNCE = 0.22, FRICTION = 0.82, REPOSE = 0.45;
     let W = 0, H = 0, dpr = 1, bed = null, grains = [], sprites = [];
     let mouse = null, raf = 0, visible = false;
 
@@ -401,13 +402,15 @@
       x.beginPath(); x.ellipse(6, 3, 5.2, 2.1, 0, 0, Math.PI * 2); x.fill();
       return c;
     };
-    // surface height of the rice bed, with a mound under the plant
-    const surface = (x) => Math.min(H - 8, 30 + 8 * Math.sin(x / 90 + 1) + 6 * Math.sin(x / 37 + 2) + 18 * Math.exp(-(((x - W * 0.9) / 150) ** 2)));
+    // height of the rice pile above the canvas bottom, with a mound under the plant
+    const pile = (x) => 30 + 8 * Math.sin(x / 90 + 1) + 6 * Math.sin(x / 37 + 2) + 18 * Math.exp(-(((x - W * 0.9) / 150) ** 2));
+    const floorAt = (g, x) => H - pile(x) + g.depth;
     const drawGrain = (ctx, sp, x, y, a) => {
       const c = Math.cos(a) * dpr, s = Math.sin(a) * dpr;
       ctx.setTransform(c, s, -s, c, x * dpr, y * dpr);
       ctx.drawImage(sp, -6, -3, 12, 6);
     };
+    const pickSprite = () => sprites[Math.random() < 0.12 ? 2 : Math.random() < 0.5 ? 1 : 0];
 
     const build = () => {
       const r = gCanvas.getBoundingClientRect();
@@ -416,30 +419,27 @@
       gCanvas.width = Math.round(W * dpr); gCanvas.height = Math.round(H * dpr);
       sprites = [makeSprite("#fffaf0", "#f3ead2", "#c9b98e"), makeSprite("#fff6dc", "#efdcae", "#b99d58"), makeSprite("#fff2c4", "#f2cd5c", "#b8902a")];
 
-      // static, non-interactive depth of the pile
+      // static depth of the pile (never moves)
       bed = document.createElement("canvas");
       bed.width = gCanvas.width; bed.height = gCanvas.height;
       const b = bed.getContext("2d");
-      const n = Math.round(W * 2.4);
-      for (let i = 0; i < n; i++) {
-        const x = Math.random() * W, top = H - surface(x) + 10;
-        const y = top + Math.random() * (H - top + 4);
-        drawGrain(b, sprites[Math.random() < 0.12 ? 2 : Math.random() < 0.5 ? 1 : 0], x, y, (Math.random() - 0.5) * 2.4);
+      for (let i = 0, n = Math.round(W * 2.4); i < n; i++) {
+        const x = Math.random() * W, top = H - pile(x) + 10;
+        drawGrain(b, pickSprite(), x, top + Math.random() * (H - top + 4), (Math.random() - 0.5) * 2.4);
       }
       b.setTransform(1, 0, 0, 1, 0, 0);
       const shade = b.createLinearGradient(0, 0, 0, bed.height);
       shade.addColorStop(0, "rgba(4,26,56,0)"); shade.addColorStop(1, "rgba(4,26,56,.35)");
       b.globalCompositeOperation = "source-atop"; b.fillStyle = shade; b.fillRect(0, 0, bed.width, bed.height);
 
-      // loose interactive grains on top of the pile
-      const count = Math.min(1700, Math.round(W * 0.95));
+      // loose surface grains — these are the ones that move
       grains = [];
-      for (let i = 0; i < count; i++) {
-        const x = Math.random() * W, y = H - surface(x) + Math.random() * 14;
-        const a = (Math.random() - 0.5) * 2.6;
-        grains.push({ hx: x, hy: y, ha: a, x, y, a, vx: 0, vy: 0, va: 0, sp: sprites[Math.random() < 0.12 ? 2 : Math.random() < 0.5 ? 1 : 0] });
+      for (let i = 0, n = Math.min(1700, Math.round(W * 0.95)); i < n; i++) {
+        const g = { x: Math.random() * W, depth: Math.random() * 14, a: (Math.random() - 0.5) * 2.6, vx: 0, vy: 0, va: 0, moving: false, sp: pickSprite() };
+        g.y = floorAt(g, g.x);
+        grains.push(g);
       }
-      grains.sort((p, q) => p.hy - q.hy);
+      grains.sort((p, q) => p.depth - q.depth);
       render();
     };
 
@@ -450,54 +450,74 @@
       for (const g of grains) drawGrain(gctx, g.sp, g.x, g.y, g.a);
     };
 
+    const kick = (g, vx, vy) => { g.vx += vx; g.vy += vy; g.va += vx * 0.05 + (Math.random() - 0.5) * 0.25; g.moving = true; };
+
     const step = () => {
       raf = 0;
-      let energy = 0;
-      const R = 70;
+      let active = 0;
+      // the pointer only disturbs grains while it is moving through them
+      if (mouse && (mouse.vx || mouse.vy)) {
+        // cap the pointer's speed so a fast flick brushes grains rather than firing them
+        const raw = Math.hypot(mouse.vx, mouse.vy), speed = Math.min(16, raw);
+        const mvx = raw ? mouse.vx / raw * speed : 0, mvy = raw ? mouse.vy / raw * speed : 0;
+        const R = 26 + speed * 1.2;
+        for (const g of grains) {
+          const dx = g.x - mouse.x, dy = g.y - mouse.y;
+          if (dx > R || dx < -R || dy > R || dy < -R) continue;
+          const d = Math.hypot(dx, dy);
+          if (d > R) continue;
+          const k = (1 - d / R) * (0.6 + Math.random() * 0.8);
+          kick(g, mvx * 0.32 * k + (dx / (d || 1)) * 0.5 * k,
+                  -(0.6 + speed * 0.09) * k + Math.min(0, mvy) * 0.15 * k);
+        }
+        mouse.vx = 0; mouse.vy = 0;
+      }
       for (const g of grains) {
-        if (mouse) {
-          const dx = g.x - mouse.x, dy = g.y - mouse.y, d = Math.hypot(dx, dy);
-          if (d < R && d > 0.01) {
-            const k = 1 - d / R;
-            g.vx += (dx / d) * k * k * 2.2 + mouse.vx * 0.06 * k;
-            g.vy += (dy / d) * k * k * 1.6 - k * 1.1;
-            g.va += (Math.random() - 0.5) * 0.3 * k;
+        if (!g.moving) continue;
+        active++;
+        g.vy += GRAV;
+        g.vx *= AIR; g.vy *= AIR;
+        g.x += g.vx; g.y += g.vy; g.a += g.va;
+        if (g.x < 3) { g.x = 3; g.vx = Math.abs(g.vx) * 0.4; }
+        if (g.x > W - 3) { g.x = W - 3; g.vx = -Math.abs(g.vx) * 0.4; }
+        const fl = floorAt(g, g.x);
+        if (g.y >= fl) {
+          g.y = fl;
+          if (g.vy > 1.2) {                       // small bounce off the pile
+            g.vy = -g.vy * BOUNCE;
+            g.vx *= 0.7; g.va *= 0.6;
+          } else {                                // on the surface: slide downhill, then rest
+            g.vy = 0;
+            const slope = (floorAt(g, g.x + 2) - floorAt(g, g.x - 2)) / 4;
+            if (Math.abs(slope) > REPOSE) g.vx += slope * 0.25;
+            g.vx *= FRICTION; g.va *= 0.7;
+            if (Math.abs(g.vx) < 0.04 && Math.abs(slope) <= REPOSE) { g.vx = 0; g.va = 0; g.moving = false; }
           }
         }
-        g.vx += (g.hx - g.x) * 0.012;
-        g.vy += (g.hy - g.y) * 0.012 + (g.y < g.hy ? 0.22 : 0);
-        g.va += (g.ha - g.a) * 0.01;
-        g.vx *= 0.9; g.vy *= 0.9; g.va *= 0.9;
-        g.x += g.vx; g.y += g.vy; g.a += g.va;
-        if (g.y > H + 2) { g.y = H + 2; g.vy *= -0.3; }
-        energy += Math.abs(g.vx) + Math.abs(g.vy) + Math.abs(g.hx - g.x) * 0.05 + Math.abs(g.hy - g.y) * 0.05;
       }
-      if (mouse) { mouse.vx *= 0.5; mouse.vy *= 0.5; }
       render();
-      if (visible && (energy / grains.length > 0.004 || (mouse && mouse.y > -80))) raf = requestAnimationFrame(step);
+      if (visible && active) raf = requestAnimationFrame(step);
     };
     const wake = () => { if (!raf && visible && !reduced) raf = requestAnimationFrame(step); };
 
     footer.addEventListener("pointermove", (e) => {
       const r = gCanvas.getBoundingClientRect();
       const x = e.clientX - r.left, y = e.clientY - r.top;
-      mouse = mouse ? { x, y, vx: x - mouse.x, vy: y - mouse.y } : { x, y, vx: 0, vy: 0 };
-      if (y > -80) wake();
+      if (mouse) { mouse.vx += x - mouse.x; mouse.vy += y - mouse.y; mouse.x = x; mouse.y = y; }
+      else mouse = { x, y, vx: 0, vy: 0 };
+      if (y > -40 && y < H + 20) wake();
     });
-    footer.addEventListener("pointerleave", () => { mouse = null; wake(); });
+    footer.addEventListener("pointerleave", () => { mouse = null; });
     footer.addEventListener("pointerdown", (e) => {
       if (reduced) return;
       const r = gCanvas.getBoundingClientRect();
       const x = e.clientX - r.left, y = e.clientY - r.top;
-      if (y < -40) return;
+      if (y < H - 140) return;
       for (const g of grains) {
         const d = Math.hypot(g.x - x, g.y - y);
-        if (d < 110) {
-          const k = 1 - d / 110;
-          g.vy -= (5 + Math.random() * 6) * k;
-          g.vx += (g.x - x) * 0.06 * k + (Math.random() - 0.5) * 2;
-          g.va += (Math.random() - 0.5) * 0.8;
-        }
+        if (d > 90) continue;
+        const k = (1 - d / 90) * (0.5 + Math.random() * 0.7);
+        kick(g, (g.x - x) * 0.07 * k + (Math.random() - 0.5) * 1.6, -(4 + Math.random() * 3.5) * k);
       }
       wake();
     });

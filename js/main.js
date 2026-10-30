@@ -373,6 +373,36 @@
   }
 
   /* ------------------------------------------------------------
+     HOME — live Ghana time + page index photo that follows the cursor
+     ------------------------------------------------------------ */
+  const ghTime = $("#ghTime");
+  if (ghTime) {
+    const tickClock = () => { ghTime.textContent = new Date().toLocaleTimeString("en-GB", { timeZone: "Africa/Accra", hour: "2-digit", minute: "2-digit" }); };
+    tickClock(); setInterval(tickClock, 20000);
+  }
+
+  const indexFloat = $("#indexFloat");
+  if (indexFloat && matchMedia("(hover: hover) and (min-width: 861px)").matches) {
+    const fimg = $("img", indexFloat);
+    let fx = 0, fy = 0, tx = 0, ty = 0, on = false, floatRaf = 0;
+    const follow = () => {
+      fx += (tx - fx) * 0.16; fy += (ty - fy) * 0.16;
+      indexFloat.style.transform = `translate(${fx.toFixed(1)}px, ${fy.toFixed(1)}px) translate(-50%, -50%) rotate(${((tx - fx) * 0.04).toFixed(2)}deg) scale(${on ? 1 : 0.85})`;
+      floatRaf = on || Math.abs(tx - fx) > 0.5 ? requestAnimationFrame(follow) : 0;
+    };
+    $$("#indexList a").forEach((a) => {
+      a.addEventListener("pointerenter", (e) => {
+        fimg.src = a.dataset.img;
+        if (!on) { fx = tx = e.clientX; fy = ty = e.clientY; }
+        on = true; indexFloat.classList.add("is-on");
+        if (!floatRaf) floatRaf = requestAnimationFrame(follow);
+      });
+      a.addEventListener("pointermove", (e) => { tx = e.clientX; ty = e.clientY; });
+      a.addEventListener("pointerleave", () => { on = false; indexFloat.classList.remove("is-on"); });
+    });
+  }
+
+  /* ------------------------------------------------------------
      FOOTER — plant leans toward the pointer; grain bed scatters and settles
      ------------------------------------------------------------ */
   const footer = $(".footer"), plant = $("#footerPlant"), gCanvas = $("#footerGrains");
@@ -505,11 +535,11 @@
       const x = e.clientX - r.left, y = e.clientY - r.top;
       if (mouse) { mouse.vx += x - mouse.x; mouse.vy += y - mouse.y; mouse.x = x; mouse.y = y; }
       else mouse = { x, y, vx: 0, vy: 0 };
-      if (y > -40 && y < H + 20) wake();
+      if (y > H - 220) wake();
     });
     footer.addEventListener("pointerleave", () => { mouse = null; });
     footer.addEventListener("pointerdown", (e) => {
-      if (reduced) return;
+      if (reduced || e.target.closest("#footerPlant")) return;
       const r = gCanvas.getBoundingClientRect();
       const x = e.clientX - r.left, y = e.clientY - r.top;
       if (y < H - 140) return;
@@ -521,6 +551,33 @@
       }
       wake();
     });
+
+    // tapping the plant shakes grains off its heads onto the pile, then returns to the top
+    if (plant) {
+      const svg = $(".fplant", plant);
+      const heads = $$(".fplant__pan ellipse", plant);
+      const extras = [];
+      let busy = false;
+      plant.addEventListener("click", () => {
+        if (busy) return;
+        busy = true;
+        svg.classList.remove("is-shaking"); void svg.getBoundingClientRect(); svg.classList.add("is-shaking");
+        const pick = heads.filter((el) => !el.classList.contains("is-fallen")).sort(() => Math.random() - 0.5).slice(0, 40);
+        pick.forEach((el, i) => setTimeout(() => {
+          const b = el.getBoundingClientRect(), cr = gCanvas.getBoundingClientRect();
+          el.classList.add("is-fallen");
+          const x = b.left + b.width / 2 - cr.left, y = b.top + b.height / 2 - cr.top;
+          if (x < 0 || x > W || reduced) return;   // part of the plant sits off-screen
+          const g = { x, y, depth: Math.random() * 14, a: Math.random() * Math.PI, vx: (Math.random() - 0.5) * 1.8 - 0.5, vy: -Math.random() * 1.5,
+                      va: (Math.random() - 0.5) * 0.3, moving: true, sp: pickSprite() };
+          grains.push(g); extras.push(g);
+          if (extras.length > 320) grains.splice(grains.indexOf(extras.shift()), 1);
+          wake();
+        }, 60 + i * 20));
+        setTimeout(() => heads.forEach((el) => el.classList.remove("is-fallen")), 6000); // the heads fill back in
+        setTimeout(() => { busy = false; scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); }, reduced ? 300 : 1900);
+      });
+    }
 
     new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) wake(); }).observe(gCanvas);
     let lastW = 0, rt;

@@ -197,7 +197,8 @@ body.menu-open .nav__burger span:nth-child(3) { top: 21px; transform: rotate(-45
   position: fixed; inset: 0; z-index: 90;
   background: radial-gradient(120% 80% at 100% 0%, #0f5aa6 0%, var(--blue-deep) 50%, var(--navy) 100%);
   display: flex; flex-direction: column; justify-content: space-between;
-  padding: 110px 24px 40px;
+  padding: 88px 24px max(28px, env(safe-area-inset-bottom));
+  overflow-y: auto; overscroll-behavior: contain;
   clip-path: circle(0% at calc(100% - 46px) 42px);
   transition: clip-path .7s cubic-bezier(.76, 0, .24, 1);
   visibility: hidden;
@@ -205,8 +206,8 @@ body.menu-open .nav__burger span:nth-child(3) { top: 21px; transform: rotate(-45
 body.menu-open .mmenu { clip-path: circle(150% at calc(100% - 46px) 42px); visibility: visible; }
 .mmenu nav { display: flex; flex-direction: column; }
 .mmenu nav a {
-  font-family: var(--ff-head); font-weight: 700; font-size: clamp(2rem, 9vw, 2.8rem); color: #fff;
-  padding: 6px 0; display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid rgba(255, 255, 255, .08);
+  font-family: var(--ff-head); font-weight: 700; font-size: clamp(1.45rem, min(9vw, 5.2vh), 2.6rem); color: #fff;
+  padding: min(10px, 1.3vh) 0; line-height: 1.15; display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid rgba(255, 255, 255, .08);
   opacity: 0; transform: translateY(20px); transition: opacity .5s, transform .6s var(--ease), color .3s;
 }
 .mmenu nav a small { font-family: var(--ff-body); font-size: .75rem; color: var(--gold-2); letter-spacing: .1em; }
@@ -219,8 +220,8 @@ body.menu-open .mmenu nav a:nth-child(4) { transition-delay: .3s; }
 body.menu-open .mmenu nav a:nth-child(5) { transition-delay: .35s; }
 body.menu-open .mmenu nav a:nth-child(6) { transition-delay: .4s; }
 body.menu-open .mmenu nav a:nth-child(7) { transition-delay: .45s; }
-.mmenu__foot { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
-.mmenu__tel { color: rgba(255, 255, 255, .75); letter-spacing: .05em; }
+.mmenu__foot { display: flex; padding-top: 20px; }
+.mmenu__foot .btn { width: 100%; }
 
 /* ==========================================================
    HERO

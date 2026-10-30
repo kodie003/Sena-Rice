@@ -373,14 +373,8 @@
   }
 
   /* ------------------------------------------------------------
-     HOME — live Ghana time + page index photo that follows the cursor
+     HOME — page index photo that follows the cursor
      ------------------------------------------------------------ */
-  const ghTime = $("#ghTime");
-  if (ghTime) {
-    const tickClock = () => { ghTime.textContent = new Date().toLocaleTimeString("en-GB", { timeZone: "Africa/Accra", hour: "2-digit", minute: "2-digit" }); };
-    tickClock(); setInterval(tickClock, 20000);
-  }
-
   const indexFloat = $("#indexFloat");
   if (indexFloat && matchMedia("(hover: hover) and (min-width: 861px)").matches) {
     const fimg = $("img", indexFloat);

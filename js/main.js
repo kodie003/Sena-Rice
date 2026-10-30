@@ -12,8 +12,18 @@
   const video = $("#heroVideo");
   if (video) {
     const portraitPhone = matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
+    // phones only autoplay a video that is muted *as a property* and inline
+    video.muted = true; video.defaultMuted = true; video.playsInline = true;
     video.src = portraitPhone ? video.dataset.srcMobile : video.dataset.srcDesktop;
     video.load();
+  }
+  const playHero = () => { if (video && video.paused) video.play().catch(() => {}); };
+  if (video) {
+    playHero();
+    video.addEventListener("canplay", playHero);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) playHero(); });
+    // if the phone refuses autoplay (e.g. iOS Low Power Mode), start on the first touch or scroll
+    ["touchstart", "pointerdown", "scroll", "keydown"].forEach((ev) => addEventListener(ev, playHero, { once: true, passive: true }));
   }
 
   /* ------------------------------------------------------------
@@ -23,7 +33,7 @@
   const reveal = () => {
     body.classList.remove("is-loading");
     body.classList.add("is-ready");
-    if (video) video.play().catch(() => {});
+    playHero();
     try { sessionStorage.setItem("sena-loaded", "1"); } catch (e) {}
   };
 

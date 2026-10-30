@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shop | Sena Rice</title>
+  <meta name="description" content="Order Sena Rice 1kg and 4.5kg packs or bulk sacks on WhatsApp. Retailers and distributors wanted.">
+  <meta name="theme-color" content="#062B57">
+  <meta property="og:title" content="Shop | Sena Rice">
+  <meta property="og:description" content="Order Sena Rice 1kg and 4.5kg packs or bulk sacks on WhatsApp. Retailers and distributors wanted.">
+  <meta property="og:image" content="assets/img/bb-farm.webp">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800;9..144,900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body class="page-shop is-ready">
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__brand" aria-label="Sena Rice home">
+      <img src="assets/img/logo-white.webp" alt="Sena Rice" width="900" height="251">
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="shop.html" class="is-active" aria-current="page">Shop</a>
+      <a href="media.html">Media</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="rentals.html">Rentals</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="btn btn--gold nav__cta" href="https://wa.me/233240659154?text=Hello%20Sena%20Rice%2C%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener">Order Now</a>
+    <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mmenu" id="mobileMenu" aria-hidden="true">
+  <nav aria-label="Mobile">
+      <a href="index.html"><small>01</small>Home</a>
+      <a href="about.html"><small>02</small>About</a>
+      <a href="shop.html" class="is-active" aria-current="page"><small>03</small>Shop</a>
+      <a href="media.html"><small>04</small>Media</a>
+      <a href="gallery.html"><small>05</small>Gallery</a>
+      <a href="rentals.html"><small>06</small>Rentals</a>
+      <a href="contact.html"><small>07</small>Contact</a>
+  </nav>
+  <div class="mmenu__foot">
+    <a class="btn btn--gold" href="https://wa.me/233240659154" target="_blank" rel="noopener">Order on WhatsApp</a>
+    <a href="tel:+233302420330" class="mmenu__tel">0302 420 330</a>
+  </div>
+</div>
+
+<main id="top">
+<section class="pbanner">
+  <img class="pbanner__img" src="assets/img/product-plate.webp" alt="">
+  <div class="pbanner__shade"></div>
+  <div class="container pbanner__inner">
+    <p class="crumbs"><a href="index.html">Home</a><span>/</span>Shop</p>
+    <h1 class="pbanner__title">Bring home <span class="gold">Sena Rice</span></h1>
+    <p class="pbanner__sub">Order straight from us on WhatsApp. Choose your pack, tell us how many, and we’ll take it from there.</p>
+  </div>
+</section>
+
+<section class="shop section">
+  <div class="container">
+    <div class="product reveal">
+      <div class="product__visual">
+        <div class="product__glow"></div>
+        <img class="product__bag" id="productBag" src="assets/img/bag.webp" alt="Sena Rice Long Grain Premium Rice 4.5kg bag" width="700" height="1037">
+        <span class="product__tag">Long Grain Premium</span>
+      </div>
+      <div class="product__info">
+        <p class="eyebrow">Sena Rice · Premium Quality</p>
+        <h2 class="product__name">Long Grain Premium Rice</h2>
+        <p class="muted">Clean, long and non-sticky grains with a rich natural aroma. Sealed in a sturdy, resealable pack with a carry handle.</p>
+
+        <div class="opt">
+          <span class="opt__label">Pack size</span>
+          <div class="seg" role="radiogroup" aria-label="Pack size">
+            <button class="seg__btn" role="radio" aria-checked="false" data-size="1kg">1 kg</button>
+            <button class="seg__btn is-on" role="radio" aria-checked="true" data-size="4.5kg">4.5 kg</button>
+            <button class="seg__btn" role="radio" aria-checked="false" data-size="bulk sacks">Bulk sacks</button>
+          </div>
+        </div>
+        <div class="opt">
+          <span class="opt__label">Quantity</span>
+          <div class="qty">
+            <button type="button" id="qtyMinus" aria-label="Decrease quantity">−</button>
+            <input id="qty" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
+            <button type="button" id="qtyPlus" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+
+        <div class="product__actions">
+          <a class="btn btn--blue" id="orderWa" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Order on WhatsApp
+          </a>
+          <a class="btn btn--line" href="tel:+233302420330">Call 0302 420 330</a>
+        </div>
+        <ul class="ticks">
+          <li>Bulk &amp; wholesale pricing available</li>
+          <li>Delivery arranged on order</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="shop__cards">
+      <a class="scard reveal" href="tel:+233302420330">
+        <img src="assets/img/product-sacks.webp" alt="Sena Rice bulk sacks" loading="lazy">
+        <div class="scard__body"><h3>Bulk purchase</h3><p>Caterers, schools, events and institutions: call our bulk line.</p><span class="link">0302 420 330 →</span></div>
+      </a>
+      <a class="scard reveal" href="https://forms.gle/VpabE2ReVwK4TbdR6" target="_blank" rel="noopener">
+        <img src="assets/img/retail.webp" alt="Retailers and distributors wanted" loading="lazy">
+        <div class="scard__body"><h3>Become a retailer</h3><p>High demand, great margins, premium packaging, a fast-moving product.</p><span class="link">Register to partner →</span></div>
+      </a>
+      <a class="scard reveal" href="contact.html">
+        <img src="assets/img/depot.webp" alt="Sena Rice depot office" loading="lazy">
+        <div class="scard__body"><h3>Sena Rice Depot</h3><p>Eat healthy. Ask us for the depot or stockist closest to you.</p><span class="link">Find a stockist →</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="partner">
+  <div class="container partner__inner reveal">
+    <div>
+      <p class="eyebrow eyebrow--light">Retailers &amp; distributors wanted</p>
+      <h2 class="h2 light">Partner with <span class="gold">Sena Rice.</span></h2>
+      <ul class="partner__list">
+        <li>High consumer demand</li><li>Great margins</li><li>Premium packaging</li><li>Fast-moving product</li>
+      </ul>
+    </div>
+    <div class="partner__cta">
+      <a class="btn btn--gold" href="https://forms.gle/VpabE2ReVwK4TbdR6" target="_blank" rel="noopener">Register as a partner</a>
+      <a class="btn btn--outline" href="tel:+233302420330">Call 0302 420 330</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="footer__glow"></div>
+  <div class="container footer__top">
+    <div class="footer__brand">
+      <img src="assets/img/logo-white.webp" alt="Sena Rice" width="900" height="251" loading="lazy">
+      <p>Premium long-grain rice from the delta of the Volta River. Superior taste, superior rice — proudly Ghanaian.</p>
+      <div class="socials">
+        <a href="https://www.facebook.com/SenaRice2026/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><use href="#i-fb"/></svg></a>
+        <a href="https://www.instagram.com/senaricegh/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><use href="#i-ig"/></svg></a>
+        <a href="https://www.tiktok.com/@senaricegh" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><use href="#i-tt"/></svg></a>
+        <a href="https://wa.me/233240659154" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><use href="#i-wa"/></svg></a>
+        <a href="mailto:senaricegh@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><use href="#i-mail"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__col">
+      <h4>Explore</h4>
+      <a href="about.html">About us</a><a href="shop.html">Shop</a><a href="media.html">Media</a><a href="gallery.html">Gallery</a><a href="rentals.html">Equipment rental</a><a href="contact.html">Contact</a>
+    </div>
+    <div class="footer__col">
+      <h4>Get in touch</h4>
+      <a href="tel:+233302420330">0302 420 330</a>
+      <a href="tel:+233552907535">0552 907 535</a>
+      <a href="tel:+233267655625">0267 655 625 <small>(rentals)</small></a>
+      <a href="mailto:senaricegh@gmail.com">senaricegh@gmail.com</a>
+    </div>
+    <div class="footer__col">
+      <h4>Follow</h4>
+      <a href="https://www.facebook.com/SenaRice2026/" target="_blank" rel="noopener">Facebook · Sena Rice</a>
+      <a href="https://www.instagram.com/senaricegh/" target="_blank" rel="noopener">Instagram · @senaricegh</a>
+      <a href="https://www.tiktok.com/@senaricegh" target="_blank" rel="noopener">TikTok · @senaricegh</a>
+      <a href="https://wa.me/233240659154" target="_blank" rel="noopener">WhatsApp · +233 24 065 9154</a>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <span>© <span id="year">2026</span> Sena Rice · A brand of Direct Meridian Company Limited</span>
+    <a href="#top" class="totop">Back to top ↑</a>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/233240659154" target="_blank" rel="noopener" aria-label="Chat with Sena Rice on WhatsApp">
+  <svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>
+</a>
+
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-label="Image viewer">
+  <button class="lb__close" id="lbClose" aria-label="Close">×</button>
+  <button class="lb__nav lb__prev" id="lbPrev" aria-label="Previous">←</button>
+  <img id="lbImg" alt="">
+  <button class="lb__nav lb__next" id="lbNext" aria-label="Next">→</button>
+  <span class="lb__count" id="lbCount"></span>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 22v-8.2h2.8l.4-3.2h-3.2V8.5c0-.9.3-1.6 1.6-1.6h1.7V4.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.3v3.2h2.8V22h3.4Z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/></g><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-tt" viewBox="0 0 24 24"><path fill="currentColor" d="M16.6 3h-3.2v12.4a2.8 2.8 0 1 1-2-2.7V9.4a6 6 0 1 0 5.2 6V9.1a7.6 7.6 0 0 0 4.4 1.4V7.3a4.4 4.4 0 0 1-4.4-4.3Z"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.6 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.3Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></g></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M5 3h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 5.3 5.3l1.4-2.2L19 13.5V17a2 2 0 0 1-2.1 2A15.5 15.5 0 0 1 3 5.1 2 2 0 0 1 5 3Z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
+</svg>
+
+<script src="js/main.js"></script>
+
+</body>
+</html>

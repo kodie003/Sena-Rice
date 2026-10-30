@@ -372,5 +372,142 @@
     });
   }
 
+  /* ------------------------------------------------------------
+     FOOTER — plant leans toward the pointer; grain bed scatters and settles
+     ------------------------------------------------------------ */
+  const footer = $(".footer"), plant = $("#footerPlant"), gCanvas = $("#footerGrains");
+  if (footer && plant) {
+    footer.addEventListener("pointermove", (e) => {
+      const r = plant.getBoundingClientRect();
+      const lean = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / 500)) * 5;
+      plant.style.setProperty("--lean", lean.toFixed(2) + "deg");
+    });
+    footer.addEventListener("pointerleave", () => plant.style.setProperty("--lean", "0deg"));
+  }
+
+  if (footer && gCanvas) {
+    const gctx = gCanvas.getContext("2d");
+    let W = 0, H = 0, dpr = 1, bed = null, grains = [], sprites = [];
+    let mouse = null, raf = 0, visible = false;
+
+    const makeSprite = (light, mid, dark) => {
+      const c = document.createElement("canvas");
+      c.width = Math.ceil(12 * dpr); c.height = Math.ceil(6 * dpr);
+      const x = c.getContext("2d");
+      x.scale(dpr, dpr);
+      const g = x.createRadialGradient(4.6, 2.2, 0.4, 6, 3, 6);
+      g.addColorStop(0, light); g.addColorStop(0.55, mid); g.addColorStop(1, dark);
+      x.fillStyle = g;
+      x.beginPath(); x.ellipse(6, 3, 5.2, 2.1, 0, 0, Math.PI * 2); x.fill();
+      return c;
+    };
+    // surface height of the rice bed, with a mound under the plant
+    const surface = (x) => Math.min(H - 8, 30 + 8 * Math.sin(x / 90 + 1) + 6 * Math.sin(x / 37 + 2) + 18 * Math.exp(-(((x - W * 0.9) / 150) ** 2)));
+    const drawGrain = (ctx, sp, x, y, a) => {
+      const c = Math.cos(a) * dpr, s = Math.sin(a) * dpr;
+      ctx.setTransform(c, s, -s, c, x * dpr, y * dpr);
+      ctx.drawImage(sp, -6, -3, 12, 6);
+    };
+
+    const build = () => {
+      const r = gCanvas.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      gCanvas.width = Math.round(W * dpr); gCanvas.height = Math.round(H * dpr);
+      sprites = [makeSprite("#fffaf0", "#f3ead2", "#c9b98e"), makeSprite("#fff6dc", "#efdcae", "#b99d58"), makeSprite("#fff2c4", "#f2cd5c", "#b8902a")];
+
+      // static, non-interactive depth of the pile
+      bed = document.createElement("canvas");
+      bed.width = gCanvas.width; bed.height = gCanvas.height;
+      const b = bed.getContext("2d");
+      const n = Math.round(W * 2.4);
+      for (let i = 0; i < n; i++) {
+        const x = Math.random() * W, top = H - surface(x) + 10;
+        const y = top + Math.random() * (H - top + 4);
+        drawGrain(b, sprites[Math.random() < 0.12 ? 2 : Math.random() < 0.5 ? 1 : 0], x, y, (Math.random() - 0.5) * 2.4);
+      }
+      b.setTransform(1, 0, 0, 1, 0, 0);
+      const shade = b.createLinearGradient(0, 0, 0, bed.height);
+      shade.addColorStop(0, "rgba(4,26,56,0)"); shade.addColorStop(1, "rgba(4,26,56,.35)");
+      b.globalCompositeOperation = "source-atop"; b.fillStyle = shade; b.fillRect(0, 0, bed.width, bed.height);
+
+      // loose interactive grains on top of the pile
+      const count = Math.min(1700, Math.round(W * 0.95));
+      grains = [];
+      for (let i = 0; i < count; i++) {
+        const x = Math.random() * W, y = H - surface(x) + Math.random() * 14;
+        const a = (Math.random() - 0.5) * 2.6;
+        grains.push({ hx: x, hy: y, ha: a, x, y, a, vx: 0, vy: 0, va: 0, sp: sprites[Math.random() < 0.12 ? 2 : Math.random() < 0.5 ? 1 : 0] });
+      }
+      grains.sort((p, q) => p.hy - q.hy);
+      render();
+    };
+
+    const render = () => {
+      gctx.setTransform(1, 0, 0, 1, 0, 0);
+      gctx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+      gctx.drawImage(bed, 0, 0);
+      for (const g of grains) drawGrain(gctx, g.sp, g.x, g.y, g.a);
+    };
+
+    const step = () => {
+      raf = 0;
+      let energy = 0;
+      const R = 70;
+      for (const g of grains) {
+        if (mouse) {
+          const dx = g.x - mouse.x, dy = g.y - mouse.y, d = Math.hypot(dx, dy);
+          if (d < R && d > 0.01) {
+            const k = 1 - d / R;
+            g.vx += (dx / d) * k * k * 2.2 + mouse.vx * 0.06 * k;
+            g.vy += (dy / d) * k * k * 1.6 - k * 1.1;
+            g.va += (Math.random() - 0.5) * 0.3 * k;
+          }
+        }
+        g.vx += (g.hx - g.x) * 0.012;
+        g.vy += (g.hy - g.y) * 0.012 + (g.y < g.hy ? 0.22 : 0);
+        g.va += (g.ha - g.a) * 0.01;
+        g.vx *= 0.9; g.vy *= 0.9; g.va *= 0.9;
+        g.x += g.vx; g.y += g.vy; g.a += g.va;
+        if (g.y > H + 2) { g.y = H + 2; g.vy *= -0.3; }
+        energy += Math.abs(g.vx) + Math.abs(g.vy) + Math.abs(g.hx - g.x) * 0.05 + Math.abs(g.hy - g.y) * 0.05;
+      }
+      if (mouse) { mouse.vx *= 0.5; mouse.vy *= 0.5; }
+      render();
+      if (visible && (energy / grains.length > 0.004 || (mouse && mouse.y > -80))) raf = requestAnimationFrame(step);
+    };
+    const wake = () => { if (!raf && visible && !reduced) raf = requestAnimationFrame(step); };
+
+    footer.addEventListener("pointermove", (e) => {
+      const r = gCanvas.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      mouse = mouse ? { x, y, vx: x - mouse.x, vy: y - mouse.y } : { x, y, vx: 0, vy: 0 };
+      if (y > -80) wake();
+    });
+    footer.addEventListener("pointerleave", () => { mouse = null; wake(); });
+    footer.addEventListener("pointerdown", (e) => {
+      if (reduced) return;
+      const r = gCanvas.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      if (y < -40) return;
+      for (const g of grains) {
+        const d = Math.hypot(g.x - x, g.y - y);
+        if (d < 110) {
+          const k = 1 - d / 110;
+          g.vy -= (5 + Math.random() * 6) * k;
+          g.vx += (g.x - x) * 0.06 * k + (Math.random() - 0.5) * 2;
+          g.va += (Math.random() - 0.5) * 0.8;
+        }
+      }
+      wake();
+    });
+
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) wake(); }).observe(gCanvas);
+    let lastW = 0, rt;
+    const onResize = () => { const w = gCanvas.getBoundingClientRect().width; if (Math.abs(w - lastW) > 2) { lastW = w; build(); } };
+    addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(onResize, 150); });
+    onResize();
+  }
+
   $("#year").textContent = new Date().getFullYear();
 })();

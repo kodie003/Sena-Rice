@@ -645,3 +645,31 @@ body:not(.page-index) .wa-float { transform: scale(1); }
   .xtile { min-height: 220px; }
   .pbanner__inner { padding-top: 120px; }
 }
+
+/* ==========================================================
+   FOOTER — half-shown rice plant + interactive grain bed
+   ========================================================== */
+.footer { padding-bottom: 96px; }
+.footer__top, .footer__bottom { z-index: 1; }
+.footer__plant {
+  position: absolute; z-index: 0; right: 0; bottom: 40px;
+  height: min(100%, 620px); aspect-ratio: 420 / 640;
+  transform: translateX(46%);
+  pointer-events: none; opacity: .9;
+}
+.fplant { width: 100%; height: 100%; overflow: visible; }
+.fplant__lean { transform-box: view-box; transform-origin: 230px 640px; transform: rotate(var(--lean, 0deg)); transition: transform 1.2s var(--ease); }
+.fplant__sway { transform-box: view-box; transform-origin: 230px 640px; animation: plantSway 7s ease-in-out infinite; }
+.fplant__pan { transform-box: view-box; animation: panSway 4.6s ease-in-out infinite; animation-delay: var(--d); }
+@keyframes plantSway { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.4deg); } }
+@keyframes panSway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3.5deg); } }
+.footer__grains { position: absolute; z-index: 2; left: 0; bottom: 0; width: 100%; height: 110px; pointer-events: none; }
+
+@media (max-width: 860px) {
+  .footer__plant { height: 420px; opacity: .55; transform: translateX(50%); }
+}
+@media (max-width: 600px) {
+  .footer { padding-bottom: 80px; }
+  .footer__plant { height: 340px; bottom: 30px; opacity: .4; }
+  .footer__grains { height: 90px; }
+}

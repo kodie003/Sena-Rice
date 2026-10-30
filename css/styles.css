@@ -755,3 +755,10 @@ body.is-ready .hero__pack { opacity: 1; transform: none; }
   .hero__actions { flex-direction: column; gap: 14px; }
   .hero__actions .btn { width: 100%; }
 }
+
+/* home page index: text list on desktop, photo tiles on tablets and phones */
+.index .explore__grid { display: none; }
+@media (max-width: 860px) {
+  .index .index__list { display: none; }
+  .index .explore__grid { display: grid; }
+}

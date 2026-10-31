@@ -10,7 +10,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 ROOT = HERE.parent
 
-NAV = [("index", "Home"), ("about", "About"), ("shop", "Shop"), ("media", "Media"),
+NAV = [("index", "Home"), ("about", "About"), ("team", "Team"), ("shop", "Shop"), ("media", "Media"),
        ("gallery", "Gallery"), ("rentals", "Rentals"), ("contact", "Contact")]
 
 DESC = "Sena Rice is premium long-grain rice grown on the delta of the Volta River, Ghana."
@@ -18,11 +18,12 @@ PAGES = {
     "index": ("Sena Rice | Superior Taste, Superior Rice | Proudly Ghanaian",
               DESC + " Shop 1kg and 4.5kg packs, bulk orders and farm machinery rentals in Sogakope."),
     "about": ("About Us | Sena Rice", DESC + " Our story, our farm and why Ghana can feed Ghana."),
-    "shop": ("Shop | Sena Rice", "Order Sena Rice 1kg and 4.5kg packs or bulk sacks on WhatsApp. Retailers and distributors wanted."),
+    "team": ("Our Team | Sena Rice", "Meet the people behind Sena Rice: letters from our Co-Founder & Head of Marketing and our Director of Operations."),
+    "shop": ("Shop | Sena Rice", "Order Sena Rice long grain (1kg to 50kg), broken rice, rice bran and kus kus on WhatsApp. Retailers and distributors wanted."),
     "media": ("Media | Sena Rice", "Sena Rice on Metro TV, on billboards and in our campaigns across Ghana."),
     "gallery": ("Gallery | Sena Rice", "Photos from the Sena Rice farm: field days, harvest season and our people."),
     "rentals": ("Farm Equipment Rental, Sogakope | Sena Rice",
-                "Tractors, ploughs, harrows, transplanters, fertiliser spreaders and water pumps for rent in Sogakope, Volta Region."),
+                "Tractors, harrows, ploughs, bund makers, seedling trays, transplanters, land levellers and water pumps for rent in Sogakope, Volta Region."),
     "contact": ("Contact | Sena Rice", "Call 0302 420 330 or 0552 907 535, WhatsApp or email senaricegh@gmail.com."),
 }
 

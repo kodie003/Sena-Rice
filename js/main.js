@@ -276,6 +276,65 @@
   }
 
   /* ------------------------------------------------------------
+     SHOP — product catalogue with an order basket sent on WhatsApp
+     ------------------------------------------------------------ */
+  const catalog = $("#catalog");
+  if (catalog) {
+    const NL = String.fromCharCode(10);
+    const prods = $$(".prod", catalog);
+    const basket = $("#basket"), countEl = $("#basketCount"), listEl = $("#basketList"), sendEl = $("#basketSend");
+    const qtyOf = (card) => Math.max(0, parseInt($("input", card).value, 10) || 0);
+    const setQty = (card, n) => {
+      n = Math.max(0, Math.min(999, n));
+      $("input", card).value = n;
+      $(".qty", card).hidden = n === 0;
+      $(".prod__add", card).hidden = n > 0;
+      renderBasket();
+    };
+    const renderBasket = () => {
+      const lines = prods.filter((c) => qtyOf(c) > 0).map((c) => ({ name: c.dataset.name, n: qtyOf(c) }));
+      const total = lines.reduce((t, l) => t + l.n, 0);
+      basket.hidden = total === 0;
+      body.classList.toggle("has-basket", total > 0);
+      if (!total) return;
+      countEl.textContent = `${total} item${total > 1 ? "s" : ""} in your order`;
+      listEl.textContent = lines.map((l) => `${l.n} × ${l.name}`).join(" · ");
+      const msg = "Hello Sena Rice! I'd like to order:" + NL + lines.map((l) => `• ${l.n} × ${l.name}`).join(NL) + NL + NL + "Please share the price and delivery details.";
+      sendEl.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+    };
+    prods.forEach((card) => {
+      $(".prod__add", card).addEventListener("click", () => { setQty(card, 1); $("input", card).focus(); });
+      $$("[data-step]", card).forEach((b) => b.addEventListener("click", () => setQty(card, qtyOf(card) + +b.dataset.step)));
+      $("input", card).addEventListener("change", () => setQty(card, qtyOf(card)));
+    });
+    $("#basketClear").addEventListener("click", () => prods.forEach((c) => setQty(c, 0)));
+    const filters = $$(".cat-filter button");
+    filters.forEach((f) => f.addEventListener("click", () => {
+      filters.forEach((x) => { x.classList.toggle("is-on", x === f); x.setAttribute("aria-selected", x === f); });
+      prods.forEach((c) => c.classList.toggle("is-hidden", f.dataset.filter !== "all" && c.dataset.cat !== f.dataset.filter));
+    }));
+  }
+
+  /* ------------------------------------------------------------
+     RENTALS — equipment photos open in the viewer
+     ------------------------------------------------------------ */
+  bindGroup($$(".hire__img"));
+
+  /* ------------------------------------------------------------
+     MEDIA — TV appearance videos (one plays at a time)
+     ------------------------------------------------------------ */
+  const vcards = $$(".vcard");
+  vcards.forEach((card) => {
+    const v = $("video", card);
+    $(".vcard__play", card).addEventListener("click", () => v.play().catch(() => {}));
+    v.addEventListener("play", () => {
+      card.classList.add("is-playing");
+      vcards.forEach((o) => { if (o !== card) $("video", o).pause(); });
+    });
+    v.addEventListener("ended", () => card.classList.remove("is-playing"));
+  });
+
+  /* ------------------------------------------------------------
      MEDIA — billboards crossfade + advert rail
      ------------------------------------------------------------ */
   const bbs = $$("#bbTrack img"), bbDots = $("#bbDots");

@@ -14,8 +14,8 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800;9..144,900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=3bd0feaa17">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800;9..144,900&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=3feb463ce2">
 
 </head>
 <body class="page-media is-ready">
@@ -28,6 +28,7 @@
     <nav class="nav__links" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
+      <a href="team.html">Team</a>
       <a href="shop.html">Shop</a>
       <a href="media.html" class="is-active" aria-current="page">Media</a>
       <a href="gallery.html">Gallery</a>
@@ -45,11 +46,12 @@
   <nav aria-label="Mobile">
       <a href="index.html"><small>01</small>Home</a>
       <a href="about.html"><small>02</small>About</a>
-      <a href="shop.html"><small>03</small>Shop</a>
-      <a href="media.html" class="is-active" aria-current="page"><small>04</small>Media</a>
-      <a href="gallery.html"><small>05</small>Gallery</a>
-      <a href="rentals.html"><small>06</small>Rentals</a>
-      <a href="contact.html"><small>07</small>Contact</a>
+      <a href="team.html"><small>03</small>Team</a>
+      <a href="shop.html"><small>04</small>Shop</a>
+      <a href="media.html" class="is-active" aria-current="page"><small>05</small>Media</a>
+      <a href="gallery.html"><small>06</small>Gallery</a>
+      <a href="rentals.html"><small>07</small>Rentals</a>
+      <a href="contact.html"><small>08</small>Contact</a>
   </nav>
   <div class="mmenu__foot">
     <a class="btn btn--gold" href="https://wa.me/233240659154" target="_blank" rel="noopener">Order on WhatsApp</a>
@@ -73,18 +75,49 @@
     <div class="stamp stamp--light" aria-hidden="true">
       <svg viewBox="0 0 200 200"><defs><path id="sp-media" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs>
         <circle cx="100" cy="100" r="96" class="stamp__ring"/><circle cx="100" cy="100" r="56" class="stamp__ring stamp__ring--in"/>
-        <text><textPath href="#sp-media" textLength="470">AS SEEN ON METRO TV ✦ LIVE IN THE KITCHEN ✦ </textPath></text></svg>
+        <text><textPath href="#sp-media" textLength="470">AS SEEN ON TV3 ✦ AND METRO TV ✦ ON AIR ✦ </textPath></text></svg>
       <img src="assets/img/bag.webp" alt="" loading="lazy">
     </div>
     <div class="section-head reveal">
-      <p class="eyebrow eyebrow--light">As seen on <b class="tvbadge">Metro TV</b></p>
+      <p class="eyebrow eyebrow--light">As seen on <b class="tvbadge">TV3</b> <b class="tvbadge tvbadge--metro">Metro TV</b></p>
       <h2 class="h2 light">Live in the kitchen, <span class="gold">on national TV.</span></h2>
-      <p class="muted-light">We took Sena Rice into the Metro TV studio kitchen to cook live and show Ghana what superior local rice tastes like.</p>
+      <p class="muted-light">From TV3’s New Day to the Metro TV kitchen, we’ve been showing Ghana what superior local rice tastes like.</p>
     </div>
     <div class="media__grid">
       <button class="media__item media__item--big reveal" data-lb="tv" data-src="assets/img/tv-1.webp"><img src="assets/img/tv-1.webp" alt="The Sena Rice team on set at Metro TV"><span class="media__cap">The Sena Rice team on set</span></button>
       <button class="media__item reveal" data-lb="tv" data-src="assets/img/tv-3.webp"><img src="assets/img/tv-3.webp" alt="Studio kitchen set with Sena Rice" loading="lazy"></button>
       <button class="media__item reveal" data-lb="tv" data-src="assets/img/tv-4.webp"><img src="assets/img/tv-4.webp" alt="Sena Rice dishes prepared live" loading="lazy"></button>
+    </div>
+
+    <div class="section-head reveal billboards-head">
+      <p class="eyebrow eyebrow--light">Watch</p>
+      <h2 class="h2 light">Sena Rice <span class="gold">on air.</span></h2>
+    </div>
+    <div class="vgrid">
+      <figure class="vcard reveal">
+        <div class="vcard__frame">
+          <video preload="none" playsinline controls poster="assets/video/tv-1.jpg" src="assets/video/tv-1.mp4"></video>
+          <button class="vcard__play" type="button" aria-label="Play: Sena Rice live on TV3’s New Day morning show."><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <span class="vcard__len">5:43</span>
+        </div>
+        <figcaption><b>TV3 · New Day</b><span>Sena Rice live on TV3’s New Day morning show.</span></figcaption>
+      </figure>
+      <figure class="vcard reveal">
+        <div class="vcard__frame">
+          <video preload="none" playsinline controls poster="assets/video/tv-2.jpg" src="assets/video/tv-2.mp4"></video>
+          <button class="vcard__play" type="button" aria-label="Play: Our feature on a Metro TV cooking show."><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <span class="vcard__len">1:12</span>
+        </div>
+        <figcaption><b>Metro TV</b><span>Our feature on a Metro TV cooking show.</span></figcaption>
+      </figure>
+      <figure class="vcard reveal">
+        <div class="vcard__frame">
+          <video preload="none" playsinline controls poster="assets/video/tv-3.jpg" src="assets/video/tv-3.mp4"></video>
+          <button class="vcard__play" type="button" aria-label="Play: The Sena Rice team in the New Day studio."><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <span class="vcard__len">1:30</span>
+        </div>
+        <figcaption><b>TV3 · New Day</b><span>The Sena Rice team in the New Day studio.</span></figcaption>
+      </figure>
     </div>
 
     <div class="section-head reveal billboards-head">
@@ -147,7 +180,7 @@
     </div>
     <div class="footer__col">
       <h4>Explore</h4>
-      <a href="about.html">About us</a><a href="shop.html">Shop</a><a href="media.html">Media</a><a href="gallery.html">Gallery</a><a href="rentals.html">Equipment rental</a><a href="contact.html">Contact</a>
+      <a href="about.html">About us</a><a href="team.html">Our team</a><a href="shop.html">Shop</a><a href="media.html">Media</a><a href="gallery.html">Gallery</a><a href="rentals.html">Equipment rental</a><a href="contact.html">Contact</a>
     </div>
     <div class="footer__col">
       <h4>Get in touch</h4>
@@ -191,7 +224,7 @@
   <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
 </svg>
 
-<script src="js/main.js?v=bcd6a5b6c3"></script>
+<script src="js/main.js?v=2fc504a11b"></script>
 
 </body>
 </html>

@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Shop | Sena Rice</title>
-  <meta name="description" content="Order Sena Rice 1kg and 4.5kg packs or bulk sacks on WhatsApp. Retailers and distributors wanted.">
+  <meta name="description" content="Order Sena Rice long grain (1kg to 50kg), broken rice, rice bran and kus kus on WhatsApp. Retailers and distributors wanted.">
   <meta name="theme-color" content="#062B57">
   <meta name="color-scheme" content="only light">
   <meta property="og:title" content="Shop | Sena Rice">
-  <meta property="og:description" content="Order Sena Rice 1kg and 4.5kg packs or bulk sacks on WhatsApp. Retailers and distributors wanted.">
+  <meta property="og:description" content="Order Sena Rice long grain (1kg to 50kg), broken rice, rice bran and kus kus on WhatsApp. Retailers and distributors wanted.">
   <meta property="og:image" content="assets/img/bb-farm.webp">
   <meta property="og:type" content="website">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800;9..144,900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=3bd0feaa17">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800;9..144,900&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=3feb463ce2">
 
 </head>
 <body class="page-shop is-ready">
@@ -28,6 +28,7 @@
     <nav class="nav__links" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
+      <a href="team.html">Team</a>
       <a href="shop.html" class="is-active" aria-current="page">Shop</a>
       <a href="media.html">Media</a>
       <a href="gallery.html">Gallery</a>
@@ -45,11 +46,12 @@
   <nav aria-label="Mobile">
       <a href="index.html"><small>01</small>Home</a>
       <a href="about.html"><small>02</small>About</a>
-      <a href="shop.html" class="is-active" aria-current="page"><small>03</small>Shop</a>
-      <a href="media.html"><small>04</small>Media</a>
-      <a href="gallery.html"><small>05</small>Gallery</a>
-      <a href="rentals.html"><small>06</small>Rentals</a>
-      <a href="contact.html"><small>07</small>Contact</a>
+      <a href="team.html"><small>03</small>Team</a>
+      <a href="shop.html" class="is-active" aria-current="page"><small>04</small>Shop</a>
+      <a href="media.html"><small>05</small>Media</a>
+      <a href="gallery.html"><small>06</small>Gallery</a>
+      <a href="rentals.html"><small>07</small>Rentals</a>
+      <a href="contact.html"><small>08</small>Contact</a>
   </nav>
   <div class="mmenu__foot">
     <a class="btn btn--gold" href="https://wa.me/233240659154" target="_blank" rel="noopener">Order on WhatsApp</a>
@@ -63,7 +65,7 @@
   <div class="container pbanner__inner">
     <p class="crumbs"><a href="index.html">Home</a><span>/</span>Shop</p>
     <h1 class="pbanner__title">Bring home <span class="gold">Sena Rice</span></h1>
-    <p class="pbanner__sub">Order straight from us on WhatsApp. Choose your pack, tell us how many, and we’ll take it from there.</p>
+    <p class="pbanner__sub">Order straight from us on WhatsApp. Choose your pack, tell us how many and we will deliver.</p>
   </div>
 </section>
 
@@ -71,52 +73,198 @@
   <div class="scatter scatter--left" data-scatter="12" aria-hidden="true"></div>
   <span class="deco pcard__motif--rings deco--br" aria-hidden="true"></span>
   <div class="container">
-    <div class="product reveal">
-      <div class="product__visual">
-        <div class="product__glow"></div>
-        <img class="product__bag" id="productBag" src="assets/img/bag.webp" alt="Sena Rice Long Grain Premium Rice 4.5kg bag" width="700" height="1037">
-        <span class="product__tag">Long Grain Premium</span>
+    <div class="cat-head reveal">
+      <div>
+        <h2 class="h2">Our products</h2>
+        <p class="muted">Add what you need, then send the whole order to us on WhatsApp. Bulk and wholesale pricing available.</p>
       </div>
-      <div class="product__info">
-        <p class="eyebrow">Sena Rice · Premium Quality</p>
-        <h2 class="product__name">Long Grain Premium Rice</h2>
-        <p class="muted">Clean, long and non-sticky grains with a rich natural aroma. Sealed in a sturdy, resealable pack with a carry handle.</p>
-
-        <div class="opt">
-          <span class="opt__label">Pack size</span>
-          <div class="seg" role="radiogroup" aria-label="Pack size">
-            <button class="seg__btn" role="radio" aria-checked="false" data-size="1kg">1 kg</button>
-            <button class="seg__btn is-on" role="radio" aria-checked="true" data-size="4.5kg">4.5 kg</button>
-            <button class="seg__btn" role="radio" aria-checked="false" data-size="bulk sacks">Bulk sacks</button>
+      <div class="cat-filter" role="tablist" aria-label="Filter products">
+        <button class="is-on" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button data-filter="long" role="tab" aria-selected="false">Long grain</button>
+        <button data-filter="broken" role="tab" aria-selected="false">Broken rice</button>
+        <button data-filter="more" role="tab" aria-selected="false">Bran &amp; kus kus</button>
+      </div>
+    </div>
+    <div class="catalog" id="catalog">
+      <article class="prod pcard pcard--sky reveal" data-cat="long" data-id="lg-1" data-name="Long Grain Premium 1kg">
+        <span class="pcard__motif pcard__motif--waves" aria-hidden="true"></span>
+        <div class="prod__media"><img src="assets/img/bag.webp" alt="Sena Rice Long Grain Premium pack" loading="lazy" class="prod__bag prod__bag--sm"></div>
+        <div class="prod__body">
+          <span class="pcard__badge">1kg</span>
+          <h3>Long Grain Premium</h3>
+          <p>Handy resealable pouch for everyday cooking.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Long Grain Premium 1kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Long Grain Premium 1kg quantity">
+              <button type="button" data-step="1" aria-label="One more Long Grain Premium 1kg">+</button>
+            </div>
           </div>
         </div>
-        <div class="opt">
-          <span class="opt__label">Quantity</span>
-          <div class="qty">
-            <button type="button" id="qtyMinus" aria-label="Decrease quantity">−</button>
-            <input id="qty" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
-            <button type="button" id="qtyPlus" aria-label="Increase quantity">+</button>
+      </article>
+      <article class="prod pcard pcard--sky reveal" data-cat="long" data-id="lg-45" data-name="Long Grain Premium 4.5kg">
+        <span class="pcard__motif pcard__motif--waves" aria-hidden="true"></span>
+        <div class="prod__media"><img src="assets/img/bag.webp" alt="Sena Rice Long Grain Premium 4.5kg pack" loading="lazy" class="prod__bag"></div>
+        <div class="prod__body">
+          <span class="pcard__badge">4.5kg</span>
+          <h3>Long Grain Premium</h3>
+          <p>Family-size resealable pack with a carry handle.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Long Grain Premium 4.5kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Long Grain Premium 4.5kg quantity">
+              <button type="button" data-step="1" aria-label="One more Long Grain Premium 4.5kg">+</button>
+            </div>
           </div>
         </div>
-
-        <div class="product__actions">
-          <a class="btn btn--blue" id="orderWa" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Order on WhatsApp
-          </a>
-          <a class="btn btn--line" href="tel:+233302420330">Call 0302 420 330</a>
+      </article>
+      <article class="prod pcard pcard--cream reveal" data-cat="long" data-id="lg-25" data-name="Long Grain Premium 25kg">
+        <span class="pcard__motif pcard__motif--grains" aria-hidden="true"></span>
+        <div class="prod__media"><img src="assets/img/stock-bags.webp" alt="Sena Rice long grain sacks" loading="lazy" class="prod__photo"></div>
+        <div class="prod__body">
+          <span class="pcard__badge">25kg</span>
+          <h3>Long Grain Premium</h3>
+          <p>Bulk sack for big families, caterers and shops.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Long Grain Premium 25kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Long Grain Premium 25kg quantity">
+              <button type="button" data-step="1" aria-label="One more Long Grain Premium 25kg">+</button>
+            </div>
+          </div>
         </div>
-        <ul class="ticks">
-          <li>Bulk &amp; wholesale pricing available</li>
-          <li>Delivery arranged on order</li>
-        </ul>
-      </div>
+      </article>
+      <article class="prod pcard pcard--cream reveal" data-cat="long" data-id="lg-50" data-name="Long Grain Premium 50kg">
+        <span class="pcard__motif pcard__motif--grains" aria-hidden="true"></span>
+        <div class="prod__media"><img src="assets/img/product-sacks.webp" alt="Sena Rice long grain 50kg sacks" loading="lazy" class="prod__photo"></div>
+        <div class="prod__body">
+          <span class="pcard__badge">50kg</span>
+          <h3>Long Grain Premium</h3>
+          <p>Wholesale sack for retailers, schools and institutions.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Long Grain Premium 50kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Long Grain Premium 50kg quantity">
+              <button type="button" data-step="1" aria-label="One more Long Grain Premium 50kg">+</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="prod pcard pcard--blush reveal" data-cat="broken" data-id="br-25" data-name="Broken Rice 25kg">
+        <span class="pcard__motif pcard__motif--rings" aria-hidden="true"></span>
+        <div class="prod__media"><svg class="sack" viewBox="0 0 200 220" aria-hidden="true">
+            <path class="sack__body" d="M38 46 Q30 120 34 196 Q100 212 166 196 Q170 120 162 46 Q100 58 38 46Z"/>
+            <path class="sack__weave" d="M40 80 Q100 92 160 80M38 110 Q100 122 162 110M37 140 Q100 152 163 140M36 170 Q100 182 164 170"/>
+            <path class="sack__neck" d="M46 48 Q100 30 154 48 L146 26 Q100 14 54 26Z"/>
+            <path class="sack__tie" d="M70 22 Q100 8 130 22"/>
+            <rect class="sack__label" x="52" y="96" width="96" height="62" rx="8"/>
+            <text class="sack__brand" x="100" y="116" text-anchor="middle">SENA RICE</text>
+            <text class="sack__name" x="100" y="136" text-anchor="middle">BROKEN RICE</text>
+            <text class="sack__kg" x="100" y="152" text-anchor="middle">25 KG</text>
+          </svg></div>
+        <div class="prod__body">
+          <span class="pcard__badge">25kg</span>
+          <h3>Broken Rice</h3>
+          <p>Clean broken grains, great for rice balls (omo tuo) and porridge.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Broken Rice 25kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Broken Rice 25kg quantity">
+              <button type="button" data-step="1" aria-label="One more Broken Rice 25kg">+</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="prod pcard pcard--blush reveal" data-cat="broken" data-id="br-50" data-name="Broken Rice 50kg">
+        <span class="pcard__motif pcard__motif--rings" aria-hidden="true"></span>
+        <div class="prod__media"><svg class="sack" viewBox="0 0 200 220" aria-hidden="true">
+            <path class="sack__body" d="M38 46 Q30 120 34 196 Q100 212 166 196 Q170 120 162 46 Q100 58 38 46Z"/>
+            <path class="sack__weave" d="M40 80 Q100 92 160 80M38 110 Q100 122 162 110M37 140 Q100 152 163 140M36 170 Q100 182 164 170"/>
+            <path class="sack__neck" d="M46 48 Q100 30 154 48 L146 26 Q100 14 54 26Z"/>
+            <path class="sack__tie" d="M70 22 Q100 8 130 22"/>
+            <rect class="sack__label" x="52" y="96" width="96" height="62" rx="8"/>
+            <text class="sack__brand" x="100" y="116" text-anchor="middle">SENA RICE</text>
+            <text class="sack__name" x="100" y="136" text-anchor="middle">BROKEN RICE</text>
+            <text class="sack__kg" x="100" y="152" text-anchor="middle">50 KG</text>
+          </svg></div>
+        <div class="prod__body">
+          <span class="pcard__badge">50kg</span>
+          <h3>Broken Rice</h3>
+          <p>Wholesale broken rice for caterers and food businesses.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Broken Rice 50kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Broken Rice 50kg quantity">
+              <button type="button" data-step="1" aria-label="One more Broken Rice 50kg">+</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="prod pcard pcard--green reveal" data-cat="more" data-id="bran-50" data-name="Rice Bran 50kg">
+        <span class="pcard__motif pcard__motif--furrows" aria-hidden="true"></span>
+        <div class="prod__media"><svg class="sack" viewBox="0 0 200 220" aria-hidden="true">
+            <path class="sack__body" d="M38 46 Q30 120 34 196 Q100 212 166 196 Q170 120 162 46 Q100 58 38 46Z"/>
+            <path class="sack__weave" d="M40 80 Q100 92 160 80M38 110 Q100 122 162 110M37 140 Q100 152 163 140M36 170 Q100 182 164 170"/>
+            <path class="sack__neck" d="M46 48 Q100 30 154 48 L146 26 Q100 14 54 26Z"/>
+            <path class="sack__tie" d="M70 22 Q100 8 130 22"/>
+            <rect class="sack__label" x="52" y="96" width="96" height="62" rx="8"/>
+            <text class="sack__brand" x="100" y="116" text-anchor="middle">SENA RICE</text>
+            <text class="sack__name" x="100" y="136" text-anchor="middle">RICE BRAN</text>
+            <text class="sack__kg" x="100" y="152" text-anchor="middle">50 KG</text>
+          </svg></div>
+        <div class="prod__body">
+          <span class="pcard__badge">50kg</span>
+          <h3>Rice Bran</h3>
+          <p>A by-product of our milling, widely used in livestock and poultry feed.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Rice Bran 50kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Rice Bran 50kg quantity">
+              <button type="button" data-step="1" aria-label="One more Rice Bran 50kg">+</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="prod pcard pcard--green reveal" data-cat="more" data-id="kus-50" data-name="Kus Kus 50kg">
+        <span class="pcard__motif pcard__motif--furrows" aria-hidden="true"></span>
+        <div class="prod__media"><svg class="sack" viewBox="0 0 200 220" aria-hidden="true">
+            <path class="sack__body" d="M38 46 Q30 120 34 196 Q100 212 166 196 Q170 120 162 46 Q100 58 38 46Z"/>
+            <path class="sack__weave" d="M40 80 Q100 92 160 80M38 110 Q100 122 162 110M37 140 Q100 152 163 140M36 170 Q100 182 164 170"/>
+            <path class="sack__neck" d="M46 48 Q100 30 154 48 L146 26 Q100 14 54 26Z"/>
+            <path class="sack__tie" d="M70 22 Q100 8 130 22"/>
+            <rect class="sack__label" x="52" y="96" width="96" height="62" rx="8"/>
+            <text class="sack__brand" x="100" y="116" text-anchor="middle">SENA RICE</text>
+            <text class="sack__name" x="100" y="136" text-anchor="middle">KUS KUS</text>
+            <text class="sack__kg" x="100" y="152" text-anchor="middle">50 KG</text>
+          </svg></div>
+        <div class="prod__body">
+          <span class="pcard__badge">50kg</span>
+          <h3>Kus Kus</h3>
+          <p>Available in 50kg sacks. Ask us for details.</p>
+          <div class="prod__buy">
+            <button type="button" class="btn btn--blue prod__add">Add to order</button>
+            <div class="qty qty--sm" hidden>
+              <button type="button" data-step="-1" aria-label="One less Kus Kus 50kg">−</button>
+              <input type="number" min="0" value="0" inputmode="numeric" aria-label="Kus Kus 50kg quantity">
+              <button type="button" data-step="1" aria-label="One more Kus Kus 50kg">+</button>
+            </div>
+          </div>
+        </div>
+      </article>
     </div>
 
     <div class="shop__cards">
       <a class="scard scard--cream reveal" href="tel:+233302420330">
         <span class="pcard__badge">Wholesale</span>
         <img src="assets/img/product-sacks.webp" alt="Sena Rice bulk sacks" loading="lazy">
-        <div class="scard__body"><h3>Bulk purchase</h3><p>Caterers, schools, events and institutions: call our bulk line.</p><span class="link">0302 420 330 →</span></div>
+        <div class="scard__body"><h3>Bulk purchase</h3><p>Caterers, schools, events and institutions: call our customer service line.</p><span class="link">0302 420 330 →</span></div>
       </a>
       <a class="scard scard--sky reveal" href="https://forms.gle/VpabE2ReVwK4TbdR6" target="_blank" rel="noopener">
         <span class="pcard__badge">Partners wanted</span>
@@ -126,7 +274,7 @@
       <a class="scard scard--green reveal" href="contact.html">
         <span class="pcard__badge">Stockists</span>
         <img src="assets/img/depot.webp" alt="Sena Rice depot office" loading="lazy">
-        <div class="scard__body"><h3>Sena Rice Depot</h3><p>Eat healthy. Ask us for the depot or stockist closest to you.</p><span class="link">Find a stockist →</span></div>
+        <div class="scard__body"><h3>Sena Rice Depot</h3><p>Eat healthy. Call us to direct you to a depot near you.</p><span class="link">Find a stockist →</span></div>
       </a>
     </div>
 
@@ -145,6 +293,11 @@
   </div>
 </section>
 
+<div class="basket" id="basket" aria-live="polite" hidden>
+  <div class="basket__info"><b id="basketCount">0 items</b><span id="basketList"></span></div>
+  <button type="button" class="basket__clear" id="basketClear">Clear</button>
+  <a class="btn btn--gold" id="basketSend" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Send order</a>
+</div>
 </main>
 
 <footer class="footer">
@@ -179,7 +332,7 @@
     </div>
     <div class="footer__col">
       <h4>Explore</h4>
-      <a href="about.html">About us</a><a href="shop.html">Shop</a><a href="media.html">Media</a><a href="gallery.html">Gallery</a><a href="rentals.html">Equipment rental</a><a href="contact.html">Contact</a>
+      <a href="about.html">About us</a><a href="team.html">Our team</a><a href="shop.html">Shop</a><a href="media.html">Media</a><a href="gallery.html">Gallery</a><a href="rentals.html">Equipment rental</a><a href="contact.html">Contact</a>
     </div>
     <div class="footer__col">
       <h4>Get in touch</h4>
@@ -223,7 +376,7 @@
   <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
 </svg>
 
-<script src="js/main.js?v=bcd6a5b6c3"></script>
+<script src="js/main.js?v=2fc504a11b"></script>
 
 </body>
 </html>

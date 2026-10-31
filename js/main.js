@@ -452,11 +452,14 @@
       "Farmer standing among the rice", "Combine harvester at work", "Celebrating harvest day", "Field visit by the Sena team",
       "Harvest team bagging paddy", "Operators preparing the harvester", "Paddy sacks lined up in the field", "Hands checking the ripening rice",
       "Loading the harvest", "Harvester crossing the field", "Rice heads close up", "Supervising the harvest", "Bagging fresh paddy",
-      "Harvester in the golden field", "A weaver bird over the rice field"];
+      "Harvester in the golden field", "A weaver bird over the rice field", "Green rice fields on the Sena farm",
+      "Rice growing tall across the farm", "Young rice beside the farm road", "Rice fields stretching to the horizon", "Healthy green rice on the Sena farm",
+      "The Sena farm under a cloudy sky", "Wide view of the Sena rice fields"];
     // fixed layout that always ends flush on a 3-column grid: blocks of [tall, small, tall, small]
     // spanning two rows, with one panoramic band (t = tall, s = small, w = wide)
-    const layout = [[1, "t"], [5, "s"], [3, "t"], [9, "s"], [6, "t"], [8, "s"], [4, "t"], [10, "s"], [13, "w"], [2, "s"],
-      [7, "t"], [15, "s"], [11, "t"], [16, "s"], [12, "t"], [17, "s"], [14, "t"], [18, "s"]];
+    const layout = [[1, "t"], [5, "s"], [3, "t"], [9, "s"], [6, "t"], [8, "s"], [4, "t"], [10, "s"], [13, "w"], [19, "s"],
+      [7, "t"], [15, "s"], [11, "t"], [16, "s"], [12, "t"], [17, "s"], [14, "t"], [18, "s"],
+      [20, "s"], [21, "s"], [22, "s"], [23, "s"], [24, "s"], [25, "s"]];
     masonry.innerHTML = layout.map(([k, t]) => {
       const n = String(k).padStart(2, "0");
       return `<button class="reveal is-${t}" data-src="assets/img/farm-${n}.webp"><img src="assets/img/farm-${n}.webp" alt="${farmAlts[k - 1]}" loading="lazy"></button>`;

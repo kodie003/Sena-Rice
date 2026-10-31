@@ -18,7 +18,7 @@ PAGES = {
     "index": ("Sena Rice | Superior Taste, Superior Rice | Proudly Ghanaian",
               DESC + " Shop 1kg and 4.5kg packs, bulk orders and farm machinery rentals in Sogakope."),
     "about": ("About Us | Sena Rice", DESC + " Our story, our farm and why Ghana can feed Ghana."),
-    "team": ("Our Team | Sena Rice", "Meet the people behind Sena Rice: letters from our Co-Founder & Head of Marketing and our Director of Operations."),
+    "team": ("Our Team | Sena Rice", "Meet the people behind Sena Rice: letters from our Co-Founders: Head of Marketing and Director of Operations."),
     "shop": ("Shop | Sena Rice", "Order Sena Rice long grain (1kg to 50kg), broken rice, rice bran and kus kus on WhatsApp. Retailers and distributors wanted."),
     "media": ("Media | Sena Rice", "Sena Rice on Metro TV, on billboards and in our campaigns across Ghana."),
     "gallery": ("Gallery | Sena Rice", "Photos from the Sena Rice farm: field days, harvest season and our people."),

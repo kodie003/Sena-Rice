@@ -505,7 +505,7 @@
       const b = bed.getContext("2d");
       const photoOk = pileImg.naturalWidth > 0;
       heights = photoOk ? new Float32Array(Math.ceil(W) + 1) : null;
-      const base = W < 600 ? 58 : 80;
+      const base = W < 600 ? 42 : 56;
       const mounds = [];
       for (let x = -base * 0.8; x < W + base; ) {
         const sc = 0.8 + Math.random() * 0.45;

@@ -280,9 +280,6 @@ body.is-ready .hero-logo { opacity: 1; }
 @keyframes float { 50% { transform: translateY(-10px); } }
 .quote { margin: 28px 0; padding: 4px 0 4px 22px; border-left: 3px solid var(--gold); font-family: var(--ff-head); font-style: italic; font-size: clamp(1.15rem, 1.8vw, 1.4rem); color: var(--blue-deep); line-height: 1.45; }
 .about__facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 32px; }
-.about__facts div { padding: 16px 18px; border-radius: var(--radius-sm); background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; line-height: 1.3; }
-.about__facts strong { font-family: var(--ff-head); color: var(--blue); font-size: 1.2rem; }
-.about__facts span { font-size: .8rem; color: var(--muted); }
 
 /* ==========================================================
    WHY
@@ -778,8 +775,6 @@ body.is-ready .hero__strip { opacity: 1; transform: translate(-50%, 0); }
 .equip__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 
 /* about facts */
-.about__facts div.pcard { border-radius: 18px; padding: 16px 18px; background: var(--t-bg); border-color: var(--t-line); box-shadow: none; }
-.about__facts div.pcard strong { color: var(--t-ink); }
 
 /* shop card badges */
 .scard { position: relative; }
@@ -1104,3 +1099,28 @@ body.has-basket .wa-float { transform: scale(0) !important; }
 .leader--flip { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
 body.has-basket main { padding-bottom: 90px; }
 @media (max-width: 860px) { .leader--flip { grid-template-columns: 1fr; } }
+
+/* about: premium feature strip */
+.about__facts { gap: 0; border-radius: 18px; overflow: hidden; background: var(--blue-deep); box-shadow: 0 26px 50px -30px rgba(4, 26, 56, .6); }
+.feat { position: relative; display: flex; align-items: center; gap: 14px; padding: 16px; color: #fff; }
+.feat + .feat::before { content: ""; position: absolute; left: 0; top: 18%; bottom: 18%; width: 1px; background: rgba(242, 205, 92, .35); }
+.feat img { flex: none; width: 52px; height: 52px; border-radius: 12px; object-fit: cover; border: 2px solid rgba(242, 205, 92, .7); }
+.feat img.feat__bag { object-fit: contain; background: #fff; padding: 4px; }
+.feat__txt { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.feat__k { font-size: .62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-2); }
+.feat strong { font-family: var(--ff-head); font-size: 1.18rem; margin: 3px 0 2px; color: #fff; }
+.feat small { font-size: .74rem; color: rgba(255, 255, 255, .7); }
+@media (max-width: 600px) {
+  .about__facts { grid-template-columns: 1fr; }
+  .feat + .feat::before { left: 16px; right: 16px; top: 0; bottom: auto; width: auto; height: 1px; }
+}
+
+/* show portraits whole; banners with people keep their heads in frame */
+.leader__photo { position: relative; top: 0; }
+.leader__photo img { aspect-ratio: auto; height: auto; object-fit: contain; }
+.pbanner__img--top { object-position: center 18%; }
+@media (min-width: 601px) {
+  .feat { flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px 18px 20px; }
+  .feat img { width: 100%; height: 74px; }
+}
+@media (max-width: 600px) { .pbanner__img--top { object-position: center 0%; } }

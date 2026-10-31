@@ -318,12 +318,29 @@
       rail.appendChild(c);
     });
     const railBtns = $$("button", rail);
+    // distance from an advert to its copy: scrolling by exactly this is visually seamless
+    const period = () => railBtns[originals.length].offsetLeft - railBtns[0].offsetLeft;
     const step = () => (railBtns[0].getBoundingClientRect().width + 18) * 2;
-    $("#railPrev").addEventListener("click", () => rail.scrollBy({ left: -step(), behavior: "smooth" }));
-    $("#railNext").addEventListener("click", () => rail.scrollBy({ left: step(), behavior: "smooth" }));
+    let pos = 0, pausedUntil = 0, hovering = false, railVisible = false, lastT = 0, raf = 0;
+    const hold = (ms = 2500) => { pausedUntil = performance.now() + ms; };
+    // keep the strip inside the middle of its two copies so both arrows and swipes always have room
+    const recentre = () => {
+      const p = period();
+      if (p <= 0) return;
+      if (rail.scrollLeft < step()) { rail.scrollLeft += p; pos = rail.scrollLeft; }
+      else if (rail.scrollLeft >= p + step()) { rail.scrollLeft -= p; pos = rail.scrollLeft; }
+    };
+    $("#railPrev").addEventListener("click", () => { hold(3500); recentre(); rail.scrollBy({ left: -step(), behavior: "smooth" }); });
+    $("#railNext").addEventListener("click", () => { hold(3500); recentre(); rail.scrollBy({ left: step(), behavior: "smooth" }); });
+
     // mouse drag-to-scroll
     let down = false, sx = 0, sl = 0, moved = 0;
-    rail.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") return; down = true; moved = 0; sx = e.clientX; sl = rail.scrollLeft; });
+    rail.addEventListener("pointerdown", (e) => {
+      hold(3000);
+      if (e.pointerType !== "mouse") return;
+      recentre();
+      down = true; moved = 0; sx = e.clientX; sl = rail.scrollLeft;
+    });
     addEventListener("pointermove", (e) => {
       if (!down) return;
       const d = e.clientX - sx; moved = Math.max(moved, Math.abs(d));
@@ -333,34 +350,38 @@
     addEventListener("pointerup", () => {
       if (!down) return; down = false;
       rail.classList.remove("is-drag");
+      hold(2500);
       if (moved > 6) { railBtns.forEach((b) => (b.dataset.dragged = "1")); setTimeout(() => railBtns.forEach((b) => delete b.dataset.dragged), 50); }
     });
 
     // auto-scroll: drifts continuously, pauses while the visitor hovers, drags, swipes or uses the arrows
-    let pos = rail.scrollLeft, pausedUntil = 0, hovering = false, railVisible = false, lastT = 0;
-    const half = () => rail.scrollWidth / 2;
-    const hold = (ms = 2500) => { pausedUntil = performance.now() + ms; };
     rail.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hovering = true; });
     rail.addEventListener("pointerleave", () => { hovering = false; hold(600); });
-    rail.addEventListener("touchstart", () => hold(4000), { passive: true });
-    rail.addEventListener("wheel", () => hold(2500), { passive: true });
-    rail.addEventListener("pointerdown", () => hold(3000));
-    $("#railPrev").addEventListener("click", () => hold(3500));
-    $("#railNext").addEventListener("click", () => hold(3500));
-    new IntersectionObserver(([en]) => { railVisible = en.isIntersecting; }).observe(rail);
+    rail.addEventListener("touchstart", () => { hold(4000); recentre(); }, { passive: true });
+    rail.addEventListener("touchmove", () => hold(3000), { passive: true });
+    rail.addEventListener("wheel", (e) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) hold(2500); }, { passive: true });
+    rail.addEventListener("scroll", () => { if (!down && performance.now() < pausedUntil) recentreSoon(); }, { passive: true });
+    let rcT;
+    const recentreSoon = () => { clearTimeout(rcT); rcT = setTimeout(recentre, 180); };
+
     const drift = (t) => {
+      raf = 0;
       const dt = lastT ? Math.min(50, t - lastT) : 16; lastT = t;
-      const h = half();
       if (Math.abs(rail.scrollLeft - pos) > 2) pos = rail.scrollLeft;   // the visitor moved it
-      if (!reduced && railVisible && !hovering && !down && t > pausedUntil) {
+      if (!reduced && !hovering && !down && t > pausedUntil) {
         pos += dt * 0.045;                                                // ~45px per second
+        const p = period();
+        if (p > 0 && pos >= p + step()) pos -= p;                          // seamless: content repeats every period
         rail.scrollLeft = pos;
       }
-      if (h > 0 && rail.scrollLeft >= h) { pos = rail.scrollLeft - h; rail.scrollLeft = pos; }
-      else if (rail.scrollLeft <= 0 && !hovering && t <= pausedUntil) { pos = h; rail.scrollLeft = pos; }
-      requestAnimationFrame(drift);
+      if (railVisible) raf = requestAnimationFrame(drift);
     };
-    requestAnimationFrame(drift);
+    new IntersectionObserver(([en]) => {
+      railVisible = en.isIntersecting;
+      if (railVisible && !raf) { lastT = 0; raf = requestAnimationFrame(drift); }
+    }).observe(rail);
+    // start one step in, so the first swipe or "←" has somewhere to go
+    requestAnimationFrame(() => { rail.scrollLeft = step(); pos = rail.scrollLeft; });
   }
 
   /* ------------------------------------------------------------

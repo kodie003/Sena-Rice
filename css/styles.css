@@ -794,3 +794,87 @@ body.is-ready .hero__strip { opacity: 1; transform: translate(-50%, 0); }
   .pcard__top { margin-bottom: 30px; }
   .pcard__icon { width: 80px; height: 80px; border-radius: 20px; }
 }
+
+/* ==========================================================
+   FILLERS — seal stamps, floating bag, drifting grains, corner motifs
+   ========================================================== */
+.has-deco { overflow: clip; }
+.has-deco > .container { position: relative; z-index: 1; }
+.deco { position: absolute; z-index: 0; width: 300px; height: 300px; pointer-events: none; background: no-repeat center / contain; opacity: .35; }
+.deco--tr { top: -60px; right: -80px; }
+.deco--br { bottom: -70px; right: -90px; }
+.deco--bl { bottom: -60px; left: -90px; }
+.deco--dark { opacity: .12; }
+
+.stamp { position: absolute; top: -10px; right: var(--gutter); width: 150px; height: 150px; pointer-events: none; z-index: 2; }
+.stamp svg { width: 100%; height: 100%; overflow: visible; animation: stampSpin 26s linear infinite; }
+.stamp text { font: 600 13.5px var(--ff-body); letter-spacing: 2px; fill: var(--blue-deep); }
+.stamp__ring { fill: none; stroke: var(--gold); stroke-width: 1.5; }
+.stamp__ring--in { stroke-dasharray: 3 5; }
+.stamp img { position: absolute; left: 50%; top: 50%; width: 40px; transform: translate(-50%, -50%) rotate(-8deg); filter: drop-shadow(0 6px 8px rgba(4, 26, 56, .3)); }
+.stamp--light text { fill: #fff; }
+.stamp--light .stamp__ring { stroke: var(--gold-2); }
+.stamp--home { top: 0; right: var(--gutter); }
+@keyframes stampSpin { to { transform: rotate(360deg); } }
+
+.deco-bag { position: absolute; z-index: 0; left: max(10px, calc(50% - 700px)); top: 90px; width: 150px; pointer-events: none;
+  transform: rotate(-14deg); filter: drop-shadow(0 26px 30px rgba(4, 26, 56, .3)); animation: bagBob 7s ease-in-out infinite; }
+@keyframes bagBob { 50% { transform: rotate(-10deg) translateY(-14px); } }
+
+.scatter { position: absolute; z-index: 0; top: 0; bottom: 0; width: min(18vw, 260px); pointer-events: none; }
+.scatter--right { right: 0; }
+.scatter--left { left: 0; }
+.scatter i {
+  position: absolute; width: 15px; height: 6px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fffaf0, #f0dfb4 60%, #c9b27a);
+  box-shadow: 0 3px 4px rgba(4, 26, 56, .12);
+  transform: rotate(var(--r)); animation: grainDrift var(--d) ease-in-out infinite alternate;
+}
+@keyframes grainDrift { to { transform: rotate(calc(var(--r) + 40deg)) translate(6px, -16px); } }
+
+.rent-note { margin-top: 16px; padding: 24px 24px 22px; border-radius: 22px; }
+.rent-note h3 { font-family: var(--ff-head); color: var(--blue-deep); font-size: 1.45rem; line-height: 1.15; margin: 14px 0 12px; max-width: 80%; }
+.rent-note__list { list-style: none; padding: 0; margin: 0 0 12px; font-size: .92rem; color: #4a5568; }
+.rent-note__list li { padding: 3px 0; }
+.rent-note__list li::before { content: ""; display: inline-block; width: 12px; height: 5px; margin-right: 10px; border-radius: 50%; background: #e2a58f; vertical-align: middle; transform: rotate(-25deg); }
+
+.why { padding-bottom: clamp(70px, 8vw, 110px); }
+
+@media (max-width: 1180px) { .deco-bag, .scatter { display: none; } }
+@media (max-width: 860px) {
+  .stamp { width: 110px; height: 110px; top: -6px; }
+  .stamp img { width: 30px; }
+  .section-head .h2 { padding-right: 0; }
+}
+@media (max-width: 600px) {
+  .stamp { display: none; }
+  .deco { width: 200px; height: 200px; }
+}
+@media (min-width: 861px) {
+  .stamp:not(.stamp--home) + .section-head { padding-right: 200px; max-width: none; }
+}
+@media (prefers-reduced-motion: reduce) { .stamp svg, .deco-bag, .scatter i { animation: none; } }
+
+/* shop: compact partner card (replaces the full-width band) */
+.partner-card { display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap; margin-top: 30px; padding: 30px 34px; }
+.partner-card h2 { font-family: var(--ff-head); font-weight: 700; color: var(--blue-deep); font-size: clamp(1.6rem, 2.6vw, 2.1rem); margin: 12px 0 10px; }
+.partner-card__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: .9rem; color: #4a5568; }
+.partner-card__list li::before { content: "✓"; color: var(--blue); font-weight: 700; margin-right: 7px; }
+.partner-card__cta { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+@media (max-width: 600px) {
+  .partner-card { padding: 24px 20px; }
+  .partner-card__cta { width: 100%; }
+  .partner-card__cta .btn { width: 100%; }
+}
+
+/* advert strip auto-scrolls, so snapping would fight it */
+.rail { scroll-snap-type: none; }
+
+/* never show the browser's own play button / controls over the background video */
+.hero__video { pointer-events: none; }
+.hero__video::-webkit-media-controls,
+.hero__video::-webkit-media-controls-enclosure,
+.hero__video::-webkit-media-controls-panel,
+.hero__video::-webkit-media-controls-overlay-play-button,
+.hero__video::-webkit-media-controls-start-playback-button,
+.hero__video::-webkit-media-controls-play-button { display: none !important; -webkit-appearance: none; opacity: 0 !important; }

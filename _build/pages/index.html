@@ -32,7 +32,7 @@
 
 <main id="top">
 <section class="hero" id="hero">
-  <video class="hero__video" id="heroVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" poster="assets/video/hero-poster.jpg"
+  <video class="hero__video" id="heroVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" poster="assets/video/hero-poster.jpg"
          data-src-desktop="assets/video/hero.mp4" data-src-mobile="assets/video/hero-mobile.mp4"></video>
   <div class="hero__shade"></div>
   <canvas class="hero__fx" id="heroFx" aria-hidden="true"></canvas>
@@ -60,8 +60,17 @@
 
 </section>
 
-<section class="explore section">
+<section class="explore section has-deco">
+  <img class="deco-bag" src="assets/img/bag.webp" alt="" aria-hidden="true" loading="lazy">
+  <div class="scatter scatter--right" data-scatter="16" aria-hidden="true"></div>
+  <span class="deco pcard__motif--grains deco--bl" aria-hidden="true"></span>
   <div class="container">
+    <div class="stamp stamp--home" aria-hidden="true">
+      <svg viewBox="0 0 200 200"><defs><path id="sp-home" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs>
+        <circle cx="100" cy="100" r="96" class="stamp__ring"/><circle cx="100" cy="100" r="56" class="stamp__ring stamp__ring--in"/>
+        <text><textPath href="#sp-home" textLength="470">SENA RICE ✦ PROUDLY GHANAIAN ✦ SUPERIOR TASTE ✦ </textPath></text></svg>
+      <img src="assets/img/bag.webp" alt="" loading="lazy">
+    </div>
     <div class="section-head center reveal">
       <p class="eyebrow">Discover Sena</p>
       <h2 class="h2">Superior taste starts <span class="blue-ital">on our farm.</span></h2>

@@ -304,8 +304,17 @@
       const n = String(i + 1).padStart(2, "0");
       return `<button data-src="assets/img/ad-${n}.webp"><img src="assets/img/ad-${n}.webp" alt="${alt}" loading="lazy" draggable="false"></button>`;
     }).join("");
+    const originals = $$("button", rail);
+    bindGroup(originals);
+    // a second copy of the adverts lets the strip loop seamlessly
+    const items = toItems(originals);
+    originals.forEach((b, i) => {
+      const c = b.cloneNode(true);
+      c.setAttribute("aria-hidden", "true"); c.tabIndex = -1;
+      c.addEventListener("click", () => { if (!c.dataset.dragged) openLb(items, i); });
+      rail.appendChild(c);
+    });
     const railBtns = $$("button", rail);
-    bindGroup(railBtns);
     const step = () => (railBtns[0].getBoundingClientRect().width + 18) * 2;
     $("#railPrev").addEventListener("click", () => rail.scrollBy({ left: -step(), behavior: "smooth" }));
     $("#railNext").addEventListener("click", () => rail.scrollBy({ left: step(), behavior: "smooth" }));
@@ -323,6 +332,32 @@
       rail.classList.remove("is-drag");
       if (moved > 6) { railBtns.forEach((b) => (b.dataset.dragged = "1")); setTimeout(() => railBtns.forEach((b) => delete b.dataset.dragged), 50); }
     });
+
+    // auto-scroll: drifts continuously, pauses while the visitor hovers, drags, swipes or uses the arrows
+    let pos = rail.scrollLeft, pausedUntil = 0, hovering = false, railVisible = false, lastT = 0;
+    const half = () => rail.scrollWidth / 2;
+    const hold = (ms = 2500) => { pausedUntil = performance.now() + ms; };
+    rail.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hovering = true; });
+    rail.addEventListener("pointerleave", () => { hovering = false; hold(600); });
+    rail.addEventListener("touchstart", () => hold(4000), { passive: true });
+    rail.addEventListener("wheel", () => hold(2500), { passive: true });
+    rail.addEventListener("pointerdown", () => hold(3000));
+    $("#railPrev").addEventListener("click", () => hold(3500));
+    $("#railNext").addEventListener("click", () => hold(3500));
+    new IntersectionObserver(([en]) => { railVisible = en.isIntersecting; }).observe(rail);
+    const drift = (t) => {
+      const dt = lastT ? Math.min(50, t - lastT) : 16; lastT = t;
+      const h = half();
+      if (Math.abs(rail.scrollLeft - pos) > 2) pos = rail.scrollLeft;   // the visitor moved it
+      if (!reduced && railVisible && !hovering && !down && t > pausedUntil) {
+        pos += dt * 0.045;                                                // ~45px per second
+        rail.scrollLeft = pos;
+      }
+      if (h > 0 && rail.scrollLeft >= h) { pos = rail.scrollLeft - h; rail.scrollLeft = pos; }
+      else if (rail.scrollLeft <= 0 && !hovering && t <= pausedUntil) { pos = h; rail.scrollLeft = pos; }
+      requestAnimationFrame(drift);
+    };
+    requestAnimationFrame(drift);
   }
 
   /* ------------------------------------------------------------
@@ -381,6 +416,22 @@
       }
     });
   }
+
+  /* ------------------------------------------------------------
+     Drifting rice grains for empty margins
+     ------------------------------------------------------------ */
+  $$("[data-scatter]").forEach((el) => {
+    for (let i = 0, n = +el.dataset.scatter || 12; i < n; i++) {
+      const g = document.createElement("i");
+      g.style.left = 8 + Math.random() * 80 + "%";
+      g.style.top = 6 + Math.random() * 88 + "%";
+      g.style.setProperty("--r", Math.round(Math.random() * 180) + "deg");
+      g.style.setProperty("--d", (5 + Math.random() * 5).toFixed(1) + "s");
+      g.style.animationDelay = -(Math.random() * 8).toFixed(1) + "s";
+      g.style.scale = (0.8 + Math.random() * 0.6).toFixed(2);
+      el.appendChild(g);
+    }
+  });
 
   /* ------------------------------------------------------------
      FOOTER — plant leans toward the pointer; grain bed scatters and settles

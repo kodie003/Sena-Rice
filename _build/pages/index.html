@@ -32,6 +32,10 @@
 
 <main id="top">
 <section class="hero" id="hero">
+  <picture class="hero__anim-wrap" aria-hidden="true">
+    <source media="(max-width: 700px) and (orientation: portrait)" srcset="assets/video/hero-mobile-anim.webp">
+    <img class="hero__anim" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
+  </picture>
   <video class="hero__video" id="heroVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" poster="assets/video/hero-poster.jpg"
          data-src-desktop="assets/video/hero.mp4" data-src-mobile="assets/video/hero-mobile.mp4"></video>
   <div class="hero__shade"></div>

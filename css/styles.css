@@ -878,3 +878,49 @@ body.is-ready .hero__strip { opacity: 1; transform: translate(-50%, 0); }
 .hero__video::-webkit-media-controls-overlay-play-button,
 .hero__video::-webkit-media-controls-start-playback-button,
 .hero__video::-webkit-media-controls-play-button { display: none !important; -webkit-appearance: none; opacity: 0 !important; }
+
+/* hero: video stays invisible until it is really playing; phones get an always-animating image underneath */
+.hero__video { opacity: 0; transition: opacity .9s ease, transform 2.4s var(--ease); }
+.hero__video.is-playing { opacity: 1; }
+.hero__anim { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 700px) and (orientation: portrait) {
+  .hero__anim { display: block; }
+}
+
+/* rentals on phones: compact, no repeated details */
+@media (max-width: 600px) {
+  .rent-note { display: none; }
+  .rentals__thumbs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 2px 4px; }
+  .rentals__thumbs::-webkit-scrollbar { display: none; }
+  .rentals__thumbs button { flex: 0 0 64px; height: 64px; }
+  .equip { gap: 10px; margin: 22px 0; }
+  .equip__item.pcard { display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: start; padding: 16px 16px 18px; border-radius: 18px; }
+  .equip__item.pcard .equip__head { grid-row: 1; }
+  .equip__item.pcard .pcard__badge { display: none; }
+  .equip__item.pcard .equip__ico { width: 44px; height: 44px; border-radius: 12px; }
+  .equip__item.pcard .equip__ico svg { width: 22px; height: 22px; }
+  .equip__item.pcard h3 { font-size: 1.02rem; margin: 2px 0 4px; }
+  .equip__item.pcard p { font-size: .84rem; line-height: 1.5; }
+  .equip__item.pcard .pcard__motif { width: 110px; height: 110px; top: -30px; right: -36px; opacity: .45; }
+  .terms { grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 20px 0; }
+  .terms div { padding: 10px 10px; border-radius: 10px; }
+  .terms strong { font-size: .86rem; }
+  .terms span { font-size: .7rem; }
+  .rentals__cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rentals__cta .btn { width: 100%; --h: 46px; padding: 0 10px; font-size: .86rem; }
+  .rentals__cta .btn:first-child { grid-column: 1 / -1; }
+  .rentals__cta .btn svg { width: 17px; height: 17px; }
+}
+.rentals__grid > *, .contact__grid > *, .about__grid > * { min-width: 0; }
+
+/* gallery: even photo grid that always ends flush */
+.masonry { columns: auto; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: clamp(150px, 17vw, 240px); grid-auto-flow: dense; gap: 14px; }
+.masonry button { margin: 0; height: 100%; border-radius: 16px; }
+.masonry img { width: 100%; height: 100%; object-fit: cover; }
+.masonry .is-t { grid-row: span 2; }
+.masonry .is-w { grid-column: span 2; }
+@media (max-width: 600px) {
+  .masonry { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; gap: 8px; }
+  .masonry .is-t, .masonry .is-w { grid-row: auto; grid-column: auto; }
+  .masonry button { border-radius: 10px; }
+}

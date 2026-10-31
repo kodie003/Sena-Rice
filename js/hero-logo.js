@@ -90,7 +90,7 @@
         x: x + (Math.random() - 0.5) * 30 * k, y: y + (Math.random() - 0.5) * 16 * k,
         vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 5 * k,
         r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.4,
-        len: (3.6 + Math.random() * 3) * k, wid: (1.4 + Math.random() * 0.9) * k,
+        len: (5 + Math.random() * 2.6) * k, wid: (1.15 + Math.random() * 0.35) * k,
         c: husk ? `hsl(${42 + Math.random() * 8}, 70%, ${55 + Math.random() * 12}%)`
                 : `hsl(${40 + Math.random() * 12}, ${25 + Math.random() * 35}%, ${92 + Math.random() * 7}%)`,
         life: 0, max: 110 + Math.random() * 70, g: 0.34 * k,

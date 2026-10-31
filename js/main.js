@@ -19,6 +19,9 @@
   }
   const playHero = () => { if (video && video.paused) video.play().catch(() => {}); };
   if (video) {
+    // only reveal the video once frames are actually moving, so a phone's own play button never shows
+    video.addEventListener("playing", () => video.classList.add("is-playing"));
+    video.addEventListener("pause", () => video.classList.remove("is-playing"));
     playHero();
     video.addEventListener("canplay", playHero);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) playHero(); });
@@ -370,9 +373,13 @@
       "Harvest team bagging paddy", "Operators preparing the harvester", "Paddy sacks lined up in the field", "Hands checking the ripening rice",
       "Loading the harvest", "Harvester crossing the field", "Rice heads close up", "Supervising the harvest", "Bagging fresh paddy",
       "Harvester in the golden field", "A weaver bird over the rice field"];
-    masonry.innerHTML = farmAlts.map((alt, i) => {
-      const n = String(i + 1).padStart(2, "0");
-      return `<button class="reveal" data-src="assets/img/farm-${n}.webp"><img src="assets/img/farm-${n}.webp" alt="${alt}" loading="lazy"></button>`;
+    // fixed layout that always ends flush on a 3-column grid: blocks of [tall, small, tall, small]
+    // spanning two rows, with one panoramic band (t = tall, s = small, w = wide)
+    const layout = [[1, "t"], [5, "s"], [3, "t"], [9, "s"], [6, "t"], [8, "s"], [4, "t"], [10, "s"], [13, "w"], [2, "s"],
+      [7, "t"], [15, "s"], [11, "t"], [16, "s"], [12, "t"], [17, "s"], [14, "t"], [18, "s"]];
+    masonry.innerHTML = layout.map(([k, t]) => {
+      const n = String(k).padStart(2, "0");
+      return `<button class="reveal is-${t}" data-src="assets/img/farm-${n}.webp"><img src="assets/img/farm-${n}.webp" alt="${farmAlts[k - 1]}" loading="lazy"></button>`;
     }).join("");
     const mBtns = $$("button", masonry);
     mBtns.forEach((el) => io.observe(el));
@@ -452,51 +459,80 @@
     let W = 0, H = 0, dpr = 1, bed = null, grains = [], sprites = [];
     let mouse = null, raf = 0, visible = false;
 
+    // outline of the real rice-pile photo: top edge per column (0 = top of image, 1 = bottom)
+    const PILE = { w: 1200, h: 534, top: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.406, 0.356, 0.328, 0.315, 0.303, 0.283, 0.262, 0.26, 0.262, 0.266, 0.24, 0.191, 0.163, 0.154, 0.14, 0.114, 0.118, 0.101, 0.092, 0.081, 0.075, 0.067, 0.062, 0.06, 0.039, 0.032, 0.039, 0.045, 0.036, 0.024, 0.022, 0.017, 0.002, 0.0, 0.024, 0.026, 0.021, 0.017, 0.017, 0.026, 0.041, 0.043, 0.06, 0.067, 0.075, 0.096, 0.09, 0.09, 0.12, 0.14, 0.144, 0.146, 0.159, 0.174, 0.2, 0.219, 0.234, 0.245, 0.255, 0.257, 0.277, 0.298, 0.3, 0.301, 0.277, 0.277, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0] };
+    const pileImg = new Image();
+    pileImg.src = "assets/img/rice-pile.webp";
+    let heights = null;
+
     const makeSprite = (light, mid, dark) => {
+      // slim long grain, about 4:1, like Sena's long-grain rice
       const c = document.createElement("canvas");
-      c.width = Math.ceil(12 * dpr); c.height = Math.ceil(6 * dpr);
+      c.width = Math.ceil(16 * dpr); c.height = Math.ceil(5 * dpr);
       const x = c.getContext("2d");
       x.scale(dpr, dpr);
-      const g = x.createRadialGradient(4.6, 2.2, 0.4, 6, 3, 6);
-      g.addColorStop(0, light); g.addColorStop(0.55, mid); g.addColorStop(1, dark);
+      const g = x.createLinearGradient(0, 0.4, 0, 4.6);
+      g.addColorStop(0, light); g.addColorStop(0.45, mid); g.addColorStop(1, dark);
       x.fillStyle = g;
-      x.beginPath(); x.ellipse(6, 3, 5.2, 2.1, 0, 0, Math.PI * 2); x.fill();
+      x.beginPath(); x.ellipse(8, 2.5, 7.4, 1.85, 0, 0, Math.PI * 2); x.fill();
+      x.fillStyle = "rgba(255,255,255,.75)";
+      x.beginPath(); x.ellipse(7, 1.7, 4.2, 0.5, 0, 0, Math.PI * 2); x.fill();
       return c;
     };
-    // height of the rice pile above the canvas bottom, with a mound under the plant
-    const pile = (x) => 30 + 8 * Math.sin(x / 90 + 1) + 6 * Math.sin(x / 37 + 2) + 18 * Math.exp(-(((x - W * 0.9) / 150) ** 2));
+    // height of the pile above the canvas bottom at x (from the photo mounds once laid out)
+    const pile = (x) => {
+      if (heights) return heights[Math.max(0, Math.min(heights.length - 1, Math.round(x)))];
+      return 30 + 8 * Math.sin(x / 90 + 1) + 6 * Math.sin(x / 37 + 2);
+    };
     const floorAt = (g, x) => H - pile(x) + g.depth;
     const drawGrain = (ctx, sp, x, y, a) => {
       const c = Math.cos(a) * dpr, s = Math.sin(a) * dpr;
       ctx.setTransform(c, s, -s, c, x * dpr, y * dpr);
-      ctx.drawImage(sp, -6, -3, 12, 6);
+      ctx.drawImage(sp, -8, -2.5, 16, 5);
     };
-    const pickSprite = () => sprites[Math.random() < 0.12 ? 2 : Math.random() < 0.5 ? 1 : 0];
+    const pickSprite = () => sprites[Math.random() < 0.15 ? 2 : Math.random() < 0.5 ? 1 : 0];
 
     const build = () => {
       const r = gCanvas.getBoundingClientRect();
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = r.width; H = r.height;
       gCanvas.width = Math.round(W * dpr); gCanvas.height = Math.round(H * dpr);
-      sprites = [makeSprite("#fffaf0", "#f3ead2", "#c9b98e"), makeSprite("#fff6dc", "#efdcae", "#b99d58"), makeSprite("#fff2c4", "#f2cd5c", "#b8902a")];
+      sprites = [makeSprite("#ffffff", "#f1efe8", "#bdb7a8"), makeSprite("#fdfcf8", "#e8e4d8", "#aaa393"), makeSprite("#fffaf0", "#efe6cf", "#c2b48f")];
 
-      // static depth of the pile (never moves)
+      // lay real rice mounds side by side along the bottom; record the combined surface
       bed = document.createElement("canvas");
       bed.width = gCanvas.width; bed.height = gCanvas.height;
       const b = bed.getContext("2d");
-      for (let i = 0, n = Math.round(W * 2.4); i < n; i++) {
-        const x = Math.random() * W, top = H - pile(x) + 10;
-        drawGrain(b, pickSprite(), x, top + Math.random() * (H - top + 4), (Math.random() - 0.5) * 2.4);
+      const photoOk = pileImg.naturalWidth > 0;
+      heights = photoOk ? new Float32Array(Math.ceil(W) + 1) : null;
+      const base = W < 600 ? 58 : 80;
+      const mounds = [];
+      for (let x = -base * 0.8; x < W + base; ) {
+        const sc = 0.8 + Math.random() * 0.45;
+        mounds.push({ x, sc, flip: Math.random() < 0.5 });
+        x += base * 2.25 * sc * (0.36 + Math.random() * 0.12);
+      }
+      mounds.push({ x: W * 0.9 - base * 1.6, sc: 1.45, flip: false });   // bigger heap under the plant
+      mounds.sort((p, q) => p.sc - q.sc);
+      for (const m of photoOk ? mounds : []) {
+        const h = base * m.sc, w = h * PILE.w / PILE.h, y = H - h + 6;
+        b.setTransform(m.flip ? -dpr : dpr, 0, 0, dpr, (m.flip ? m.x + w : m.x) * dpr, y * dpr);
+        b.drawImage(pileImg, 0, 0, w, h);
+        for (let px = Math.max(0, Math.floor(m.x)); px < Math.min(W, m.x + w); px++) {
+          let u = (px - m.x) / w; if (m.flip) u = 1 - u;
+          const t = PILE.top[Math.min(PILE.top.length - 1, Math.floor(u * PILE.top.length))];
+          heights[px] = Math.max(heights[px], h * (1 - t) - 6);
+        }
       }
       b.setTransform(1, 0, 0, 1, 0, 0);
-      const shade = b.createLinearGradient(0, 0, 0, bed.height);
-      shade.addColorStop(0, "rgba(4,26,56,0)"); shade.addColorStop(1, "rgba(4,26,56,.35)");
+      const shade = b.createLinearGradient(0, bed.height * 0.55, 0, bed.height);
+      shade.addColorStop(0, "rgba(4,26,56,0)"); shade.addColorStop(1, "rgba(4,26,56,.28)");
       b.globalCompositeOperation = "source-atop"; b.fillStyle = shade; b.fillRect(0, 0, bed.width, bed.height);
 
       // loose surface grains — these are the ones that move
       grains = [];
-      for (let i = 0, n = Math.min(1700, Math.round(W * 0.95)); i < n; i++) {
-        const g = { x: Math.random() * W, depth: Math.random() * 14, a: (Math.random() - 0.5) * 2.6, vx: 0, vy: 0, va: 0, moving: false, sp: pickSprite() };
+      for (let i = 0, n = Math.min(900, Math.round(W * 0.5)); i < n; i++) {
+        const g = { x: Math.random() * W, depth: Math.random() * 10, a: (Math.random() - 0.5) * 2.6, vx: 0, vy: 0, va: 0, moving: false, sp: pickSprite() };
         g.y = floorAt(g, g.x);
         grains.push(g);
       }
@@ -614,7 +650,8 @@
     let lastW = 0, rt;
     const onResize = () => { const w = gCanvas.getBoundingClientRect().width; if (Math.abs(w - lastW) > 2) { lastW = w; build(); } };
     addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(onResize, 150); });
-    onResize();
+    if (pileImg.complete && pileImg.naturalWidth) onResize();
+    else { pileImg.addEventListener("load", onResize, { once: true }); pileImg.addEventListener("error", onResize, { once: true }); }
   }
 
   $("#year").textContent = new Date().getFullYear();
